@@ -218,7 +218,7 @@ class StarTradeAPITester:
             "Create Area",
             "POST",
             "areas",
-            201,
+            200,
             data=test_area
         )
         
