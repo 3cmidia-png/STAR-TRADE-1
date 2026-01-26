@@ -230,7 +230,7 @@ export default function Landing() {
           muted
           playsInline
           className="absolute inset-0 w-full h-full object-cover"
-          poster="https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?w=1920"
+          poster="https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=1920&auto=format&fit=crop"
         >
           <source src={settings.hero.video_url} type="video/mp4" />
         </video>
