@@ -467,13 +467,13 @@ export default function Landing() {
                 {t("about.subtitle")}
               </p>
               <h2 className="font-['Oswald'] text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 uppercase tracking-tight mb-8">
-                {settings.about.title}
+                {getText(settings.about.title)}
               </h2>
               <p className="text-slate-600 text-lg leading-relaxed mb-6">
-                {settings.about.paragraph1}
+                {getText(settings.about.paragraph1)}
               </p>
               <p className="text-slate-600 text-lg leading-relaxed mb-8">
-                {settings.about.paragraph2}
+                {getText(settings.about.paragraph2)}
               </p>
               <Button
                 onClick={() => scrollToSection("contato")}
