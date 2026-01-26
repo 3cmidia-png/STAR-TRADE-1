@@ -1,0 +1,134 @@
+{
+  "brand_identity": {
+    "name": "Star Trade",
+    "archetype": "The Global Connector",
+    "tone": "Professional, Efficient, Trustworthy, Expansive",
+    "theme_mode": "light"
+  },
+  "typography": {
+    "font_family": {
+      "headings": "Oswald, sans-serif",
+      "body": "Inter, sans-serif",
+      "mono": "JetBrains Mono, monospace"
+    },
+    "scale": {
+      "h1": "text-5xl md:text-7xl font-bold tracking-tight uppercase",
+      "h2": "text-4xl md:text-5xl font-semibold tracking-tight uppercase",
+      "h3": "text-2xl md:text-3xl font-medium",
+      "body": "text-base md:text-lg leading-relaxed text-slate-600",
+      "caption": "text-sm font-medium tracking-widest uppercase text-slate-500"
+    },
+    "imports": [
+      "@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Oswald:wght@400;500;700&display=swap');"
+    ]
+  },
+  "colors": {
+    "primary": {
+      "DEFAULT": "#1E3A8A",
+      "foreground": "#FFFFFF",
+      "hover": "#172554"
+    },
+    "secondary": {
+      "DEFAULT": "#D4AF37",
+      "foreground": "#FFFFFF",
+      "description": "Gold for Ornamental Stones badge and premium accents"
+    },
+    "background": {
+      "DEFAULT": "#FFFFFF",
+      "subtle": "#F8FAFC",
+      "dark": "#0F172A"
+    },
+    "text": {
+      "primary": "#0F172A",
+      "secondary": "#475569",
+      "muted": "#94A3B8"
+    },
+    "border": {
+      "DEFAULT": "#E2E8F0",
+      "subtle": "#F1F5F9"
+    }
+  },
+  "layout": {
+    "container": "max-w-7xl mx-auto px-6 md:px-12",
+    "spacing": {
+      "section_y": "py-24 md:py-32",
+      "element_gap": "gap-8 md:gap-12"
+    },
+    "grid_system": {
+      "bento": "grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6",
+      "dashboard": "grid grid-cols-12 gap-6"
+    },
+    "border_radius": {
+      "card": "rounded-none",
+      "button": "rounded-sm",
+      "input": "rounded-sm"
+    }
+  },
+  "components": {
+    "buttons": {
+      "primary": "bg-[#1E3A8A] text-white hover:bg-[#172554] rounded-sm px-8 py-4 uppercase tracking-wider font-medium transition-all duration-300 hover:shadow-lg",
+      "secondary": "border border-[#1E3A8A] text-[#1E3A8A] hover:bg-[#1E3A8A] hover:text-white rounded-sm px-8 py-4 uppercase tracking-wider font-medium transition-all duration-300",
+      "ghost": "text-slate-600 hover:text-[#1E3A8A] hover:bg-slate-50 rounded-sm px-4 py-2 transition-colors"
+    },
+    "cards": {
+      "feature": "bg-white p-8 border border-slate-100 hover:border-[#1E3A8A]/20 hover:shadow-xl transition-all duration-500 group",
+      "bento_item": "relative overflow-hidden bg-slate-50 group hover:shadow-2xl transition-all duration-500 border border-slate-200"
+    },
+    "badges": {
+      "gold": "bg-[#D4AF37] text-white px-3 py-1 text-xs font-bold uppercase tracking-widest rounded-sm shadow-md"
+    }
+  },
+  "assets": {
+    "images": {
+      "hero_bg": "https://images.unsplash.com/photo-1761926002909-781a45b71030?q=85&w=1920&auto=format&fit=crop",
+      "about_us": "https://images.unsplash.com/photo-1703194531119-e8b98a555cb6?q=85&w=1000&auto=format&fit=crop",
+      "areas": {
+        "stones": "https://images.unsplash.com/photo-1585749864763-de34e7afde1b?q=85&w=800&auto=format&fit=crop",
+        "food": "https://images.unsplash.com/photo-1650012048722-c81295ccbe79?q=85&w=800&auto=format&fit=crop",
+        "digital": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=85&w=800&auto=format&fit=crop",
+        "bikes": "https://images.unsplash.com/photo-1747866746076-689c5371e707?q=85&w=800&auto=format&fit=crop"
+      }
+    },
+    "icons": {
+      "library": "lucide-react",
+      "style": "stroke-width={1.5} className='w-6 h-6'"
+    }
+  },
+  "motion": {
+    "library": "framer-motion",
+    "defaults": {
+      "initial": { "opacity": 0, "y": 20 },
+      "animate": { "opacity": 1, "y": 0 },
+      "transition": { "duration": 0.6, "ease": "easeOut" }
+    },
+    "stagger": {
+      "container": {
+        "hidden": { "opacity": 0 },
+        "show": {
+          "opacity": 1,
+          "transition": { "staggerChildren": 0.1 }
+        }
+      },
+      "item": {
+        "hidden": { "opacity": 0, "y": 20 },
+        "show": { "opacity": 1, "y": 0 }
+      }
+    }
+  },
+  "dashboard_guidelines": {
+    "layout": "Sidebar navigation (fixed left) + Main Content Area",
+    "style": "Clean, white cards, minimal borders, high data density",
+    "charts": "Recharts with custom tooltips, minimal grid lines",
+    "tables": "Shadcn Table component, striped rows optional, sticky header"
+  },
+  "universal_guidelines": [
+    "Use 'Oswald' for all headings to convey industrial strength.",
+    "Use 'Inter' for body text for maximum readability.",
+    "Primary Blue (#1E3A8A) is for primary actions and branding.",
+    "Gold (#D4AF37) is EXCLUSIVELY for the 'Ornamental Stones' highlight and premium accents.",
+    "Avoid rounded corners > 4px. Keep it sharp and professional.",
+    "Use generous whitespace (py-24+) between sections.",
+    "All images must have a subtle overlay (bg-black/10) when text is placed over them.",
+    "Dashboard must be clean: White backgrounds, slate-500 text for labels, slate-900 for values."
+  ]
+}
