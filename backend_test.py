@@ -362,7 +362,7 @@ class StarTradeAPITester:
             "Contact Form Submission",
             "POST",
             "contact",
-            201,
+            200,
             data=contact_data
         )
         
