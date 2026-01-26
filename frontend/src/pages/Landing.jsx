@@ -596,7 +596,7 @@ export default function Landing() {
                     : "0"}
                 </div>
                 <p className="text-white/70 uppercase tracking-wider text-sm font-medium">
-                  {stat.label}
+                  {getText(stat.label)}
                 </p>
               </div>
             ))}
