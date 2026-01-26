@@ -150,12 +150,14 @@ class SiteSettings(BaseModel):
     logo_url: str = "https://customer-assets.emergentagent.com/job_star-trade-intl/artifacts/7zqbrzwt_star%20trade.png"
     logo_dark_url: str = ""
     favicon_url: str = ""
+    logo_settings: LogoSettings = Field(default_factory=LogoSettings)
     hero: HeroSettings = Field(default_factory=HeroSettings)
     about: AboutSettings = Field(default_factory=AboutSettings)
     differentials: List[DifferentialCard] = Field(default_factory=list)
     stats: List[StatItem] = Field(default_factory=list)
     contact: ContactInfo = Field(default_factory=ContactInfo)
     colors: SiteColors = Field(default_factory=SiteColors)
+    default_language: str = "pt"
     updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 # Areas
