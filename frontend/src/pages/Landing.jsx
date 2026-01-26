@@ -74,6 +74,13 @@ export default function Landing() {
 
   const currentLang = i18n.language?.substring(0, 2) || "pt";
 
+  // Helper to get translated text from settings
+  const getText = (field) => {
+    if (!field) return "";
+    if (typeof field === "string") return field;
+    return field[currentLang] || field.pt || "";
+  };
+
   useEffect(() => {
     fetchData();
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -395,19 +402,19 @@ export default function Landing() {
             style={{ maxWidth: `${settings.hero?.title_max_width || 800}px` }}
             data-testid="hero-title"
           >
-            {settings.hero.title}
+            {getText(settings.hero.title)}
           </h1>
           <p 
             className="text-lg md:text-xl text-white/90 mb-10 max-w-2xl animate-fadeInUp delay-200"
           >
-            {settings.hero.subtitle}
+            {getText(settings.hero.subtitle)}
           </p>
           <Button
             onClick={() => scrollToSection("contato")}
             className="bg-[#1E3A8A] hover:bg-[#172554] text-white px-10 py-6 text-base uppercase tracking-wider rounded-sm animate-fadeInUp delay-300"
             data-testid="hero-cta"
           >
-            {settings.hero.cta_text}
+            {getText(settings.hero.cta_text)}
             <ArrowRight className="ml-2 w-5 h-5" />
           </Button>
         </div>
