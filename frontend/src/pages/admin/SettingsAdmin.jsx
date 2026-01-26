@@ -814,46 +814,141 @@ export default function SettingsAdmin() {
         <TabsContent value="about">
           <Card className="border-0 shadow-sm">
             <CardHeader>
-              <CardTitle className="text-lg">Seção Quem Somos</CardTitle>
+              <CardTitle className="text-lg flex items-center gap-2">
+                <Globe className="w-5 h-5" />
+                Seção Quem Somos (Multilíngue)
+              </CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
+              {/* Title */}
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">
                   Título
                 </label>
-                <Input
-                  value={settings.about.title}
-                  onChange={(e) => updateField("about.title", e.target.value)}
-                  className="rounded-sm"
-                  data-testid="about-title-input"
-                />
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <span className="text-xs text-slate-500 flex items-center gap-1 mb-1">🇧🇷 Português</span>
+                    <Input
+                      value={typeof settings.about.title === 'object' ? settings.about.title.pt : settings.about.title}
+                      onChange={(e) => updateField("about.title", {
+                        ...((typeof settings.about.title === 'object') ? settings.about.title : {pt: settings.about.title, en: settings.about.title, es: settings.about.title}),
+                        pt: e.target.value
+                      })}
+                      className="rounded-sm"
+                      data-testid="about-title-pt"
+                    />
+                  </div>
+                  <div>
+                    <span className="text-xs text-slate-500 flex items-center gap-1 mb-1">🇺🇸 English</span>
+                    <Input
+                      value={typeof settings.about.title === 'object' ? settings.about.title.en : ''}
+                      onChange={(e) => updateField("about.title", {
+                        ...((typeof settings.about.title === 'object') ? settings.about.title : {pt: settings.about.title, en: '', es: ''}),
+                        en: e.target.value
+                      })}
+                      className="rounded-sm"
+                    />
+                  </div>
+                  <div>
+                    <span className="text-xs text-slate-500 flex items-center gap-1 mb-1">🇪🇸 Español</span>
+                    <Input
+                      value={typeof settings.about.title === 'object' ? settings.about.title.es : ''}
+                      onChange={(e) => updateField("about.title", {
+                        ...((typeof settings.about.title === 'object') ? settings.about.title : {pt: settings.about.title, en: '', es: ''}),
+                        es: e.target.value
+                      })}
+                      className="rounded-sm"
+                    />
+                  </div>
+                </div>
               </div>
+
+              {/* Paragraph 1 */}
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">
                   Parágrafo 1
                 </label>
-                <Textarea
-                  value={settings.about.paragraph1}
-                  onChange={(e) =>
-                    updateField("about.paragraph1", e.target.value)
-                  }
-                  className="rounded-sm min-h-[100px]"
-                  data-testid="about-p1-input"
-                />
+                <div className="space-y-3">
+                  <div>
+                    <span className="text-xs text-slate-500 flex items-center gap-1 mb-1">🇧🇷 Português</span>
+                    <Textarea
+                      value={typeof settings.about.paragraph1 === 'object' ? settings.about.paragraph1.pt : settings.about.paragraph1}
+                      onChange={(e) => updateField("about.paragraph1", {
+                        ...((typeof settings.about.paragraph1 === 'object') ? settings.about.paragraph1 : {pt: settings.about.paragraph1, en: settings.about.paragraph1, es: settings.about.paragraph1}),
+                        pt: e.target.value
+                      })}
+                      className="rounded-sm min-h-[80px]"
+                      data-testid="about-p1-pt"
+                    />
+                  </div>
+                  <div>
+                    <span className="text-xs text-slate-500 flex items-center gap-1 mb-1">🇺🇸 English</span>
+                    <Textarea
+                      value={typeof settings.about.paragraph1 === 'object' ? settings.about.paragraph1.en : ''}
+                      onChange={(e) => updateField("about.paragraph1", {
+                        ...((typeof settings.about.paragraph1 === 'object') ? settings.about.paragraph1 : {pt: settings.about.paragraph1, en: '', es: ''}),
+                        en: e.target.value
+                      })}
+                      className="rounded-sm min-h-[80px]"
+                    />
+                  </div>
+                  <div>
+                    <span className="text-xs text-slate-500 flex items-center gap-1 mb-1">🇪🇸 Español</span>
+                    <Textarea
+                      value={typeof settings.about.paragraph1 === 'object' ? settings.about.paragraph1.es : ''}
+                      onChange={(e) => updateField("about.paragraph1", {
+                        ...((typeof settings.about.paragraph1 === 'object') ? settings.about.paragraph1 : {pt: settings.about.paragraph1, en: '', es: ''}),
+                        es: e.target.value
+                      })}
+                      className="rounded-sm min-h-[80px]"
+                    />
+                  </div>
+                </div>
               </div>
+
+              {/* Paragraph 2 */}
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">
                   Parágrafo 2
                 </label>
-                <Textarea
-                  value={settings.about.paragraph2}
-                  onChange={(e) =>
-                    updateField("about.paragraph2", e.target.value)
-                  }
-                  className="rounded-sm min-h-[100px]"
-                  data-testid="about-p2-input"
-                />
+                <div className="space-y-3">
+                  <div>
+                    <span className="text-xs text-slate-500 flex items-center gap-1 mb-1">🇧🇷 Português</span>
+                    <Textarea
+                      value={typeof settings.about.paragraph2 === 'object' ? settings.about.paragraph2.pt : settings.about.paragraph2}
+                      onChange={(e) => updateField("about.paragraph2", {
+                        ...((typeof settings.about.paragraph2 === 'object') ? settings.about.paragraph2 : {pt: settings.about.paragraph2, en: settings.about.paragraph2, es: settings.about.paragraph2}),
+                        pt: e.target.value
+                      })}
+                      className="rounded-sm min-h-[80px]"
+                      data-testid="about-p2-pt"
+                    />
+                  </div>
+                  <div>
+                    <span className="text-xs text-slate-500 flex items-center gap-1 mb-1">🇺🇸 English</span>
+                    <Textarea
+                      value={typeof settings.about.paragraph2 === 'object' ? settings.about.paragraph2.en : ''}
+                      onChange={(e) => updateField("about.paragraph2", {
+                        ...((typeof settings.about.paragraph2 === 'object') ? settings.about.paragraph2 : {pt: settings.about.paragraph2, en: '', es: ''}),
+                        en: e.target.value
+                      })}
+                      className="rounded-sm min-h-[80px]"
+                    />
+                  </div>
+                  <div>
+                    <span className="text-xs text-slate-500 flex items-center gap-1 mb-1">🇪🇸 Español</span>
+                    <Textarea
+                      value={typeof settings.about.paragraph2 === 'object' ? settings.about.paragraph2.es : ''}
+                      onChange={(e) => updateField("about.paragraph2", {
+                        ...((typeof settings.about.paragraph2 === 'object') ? settings.about.paragraph2 : {pt: settings.about.paragraph2, en: '', es: ''}),
+                        es: e.target.value
+                      })}
+                      className="rounded-sm min-h-[80px]"
+                    />
+                  </div>
+                </div>
               </div>
+
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">
                   URL da Imagem
