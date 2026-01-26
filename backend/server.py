@@ -192,14 +192,22 @@ class SiteSettings(BaseModel):
 # Areas
 class AreaCreate(BaseModel):
     title: str
+    title_en: str = ""
+    title_es: str = ""
     description: str
+    description_en: str = ""
+    description_es: str = ""
     image_url: str
     icon: str
     is_specialty: bool = False
     badge_text: str = "Setor"
+    badge_text_en: str = "Sector"
+    badge_text_es: str = "Sector"
     badge_color: str = "#1E3A8A"
     overlay_color: str = "rgba(30, 58, 138, 0.7)"
     button_text: str = "Saiba Mais"
+    button_text_en: str = "Learn More"
+    button_text_es: str = "Saber Más"
     button_link: str = ""
     is_active: bool = True
     order: int = 0
