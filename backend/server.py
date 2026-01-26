@@ -143,23 +143,17 @@ class LogoSettings(BaseModel):
     brightness: int = 100  # 50-150%
     hover_effect: str = "none"  # none, grow, glow, rotate
 
-class AboutSettings(BaseModel):
-    title: str = "Sobre a Star Trade"
-    paragraph1: str = "A Star Trade é uma trading company especializada em soluções completas de importação e exportação. Nossa missão é conectar empresas ao mercado global com eficiência, segurança e inteligência comercial."
-    paragraph2: str = "Com anos de experiência no mercado, oferecemos assessoria completa: desde a cotação até a entrega final, incluindo despacho aduaneiro, planejamento logístico e consultoria tributária."
-    image_url: str = "https://images.unsplash.com/photo-1703194531119-e8b98a555cb6?q=85&w=1000&auto=format&fit=crop"
-
 class DifferentialCard(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     icon: str
-    title: str
-    description: str
+    title: TranslatableText = Field(default_factory=lambda: TranslatableText())
+    description: TranslatableText = Field(default_factory=lambda: TranslatableText())
     order: int = 0
 
 class StatItem(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     value: str
-    label: str
+    label: TranslatableText = Field(default_factory=lambda: TranslatableText())
     order: int = 0
 
 class ContactInfo(BaseModel):
