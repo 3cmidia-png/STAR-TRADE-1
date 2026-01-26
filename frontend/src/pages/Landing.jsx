@@ -368,7 +368,7 @@ export default function Landing() {
       {/* Hero Section */}
       <section
         id="home"
-        className="relative min-h-screen flex flex-col justify-center overflow-hidden"
+        className="relative min-h-screen flex flex-col justify-center video-container"
         data-testid="hero-section"
       >
         <video
@@ -377,13 +377,11 @@ export default function Landing() {
           muted
           playsInline
           className="absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto -translate-x-1/2 -translate-y-1/2 object-cover"
-          poster="https://images.pexels.com/videos/6857819/pexels-photo-6857819.jpeg?auto=compress&cs=tinysrgb&w=1920"
+          poster="https://images.pexels.com/photos/1117210/pexels-photo-1117210.jpeg?auto=compress&cs=tinysrgb&w=1920"
         >
           <source src={settings.hero.video_url} type="video/mp4" />
         </video>
-        <div 
-          className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/70"
-        ></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/70"></div>
         
         <div className={`relative z-10 px-6 max-w-5xl mx-auto w-full flex flex-col ${
           settings.hero?.horizontal_align === "left" ? "items-start text-left" :
