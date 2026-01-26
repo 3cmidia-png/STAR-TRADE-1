@@ -64,6 +64,21 @@ class TranslatableText(BaseModel):
     pt: str = ""
     en: str = ""
     es: str = ""
+    
+    @classmethod
+    def from_value(cls, value):
+        """Convert string or dict to TranslatableText"""
+        if isinstance(value, str):
+            return cls(pt=value, en=value, es=value)
+        if isinstance(value, dict):
+            return cls(
+                pt=value.get("pt", ""),
+                en=value.get("en", ""),
+                es=value.get("es", "")
+            )
+        if isinstance(value, TranslatableText):
+            return value
+        return cls()
 
 class HeroSettings(BaseModel):
     title: TranslatableText = Field(default_factory=lambda: TranslatableText(
@@ -326,26 +341,80 @@ async def get_me(user: dict = Depends(get_current_user)):
 
 # ============ SITE SETTINGS ROUTES ============
 
+def migrate_translatable_fields(data: dict, field_paths: list) -> dict:
+    """Migrate old string fields to TranslatableText format"""
+    for path in field_paths:
+        parts = path.split(".")
+        current = data
+        for i, part in enumerate(parts[:-1]):
+            if part in current and isinstance(current[part], dict):
+                current = current[part]
+            else:
+                break
+        else:
+            final_key = parts[-1]
+            if final_key in current:
+                value = current[final_key]
+                if isinstance(value, str):
+                    current[final_key] = {"pt": value, "en": value, "es": value}
+    return data
+
 @api_router.get("/settings", response_model=SiteSettings)
 async def get_settings():
     settings = await db.settings.find_one({"id": "site_settings"}, {"_id": 0})
     if not settings:
         default = SiteSettings()
         default.differentials = [
-            DifferentialCard(icon="Users", title="Equipe Especializada", description="Profissionais com vasta experiência em comércio exterior", order=0),
-            DifferentialCard(icon="Clock", title="Agilidade", description="Processos otimizados para entregas no prazo", order=1),
-            DifferentialCard(icon="Shield", title="Segurança", description="Gestão completa com total transparência", order=2),
+            DifferentialCard(
+                icon="Users", 
+                title=TranslatableText(pt="Equipe Especializada", en="Specialized Team", es="Equipo Especializado"), 
+                description=TranslatableText(pt="Profissionais com vasta experiência em comércio exterior", en="Professionals with extensive experience in foreign trade", es="Profesionales con amplia experiencia en comercio exterior"), 
+                order=0
+            ),
+            DifferentialCard(
+                icon="Clock", 
+                title=TranslatableText(pt="Agilidade", en="Agility", es="Agilidad"), 
+                description=TranslatableText(pt="Processos otimizados para entregas no prazo", en="Optimized processes for on-time deliveries", es="Procesos optimizados para entregas a tiempo"), 
+                order=1
+            ),
+            DifferentialCard(
+                icon="Shield", 
+                title=TranslatableText(pt="Segurança", en="Security", es="Seguridad"), 
+                description=TranslatableText(pt="Gestão completa com total transparência", en="Complete management with total transparency", es="Gestión completa con total transparencia"), 
+                order=2
+            ),
         ]
         default.stats = [
-            StatItem(value="500+", label="Importações Realizadas", order=0),
-            StatItem(value="1500+", label="Projetos Concluídos", order=1),
-            StatItem(value="50+", label="Containers/Mês", order=2),
-            StatItem(value="8+", label="Anos de Experiência", order=3),
+            StatItem(value="500+", label=TranslatableText(pt="Importações Realizadas", en="Imports Completed", es="Importaciones Realizadas"), order=0),
+            StatItem(value="1500+", label=TranslatableText(pt="Projetos Concluídos", en="Projects Completed", es="Proyectos Completados"), order=1),
+            StatItem(value="50+", label=TranslatableText(pt="Containers/Mês", en="Containers/Month", es="Contenedores/Mes"), order=2),
+            StatItem(value="8+", label=TranslatableText(pt="Anos de Experiência", en="Years of Experience", es="Años de Experiencia"), order=3),
         ]
         settings_dict = default.model_dump()
         settings_dict["updated_at"] = settings_dict["updated_at"].isoformat()
         await db.settings.insert_one(settings_dict)
         return default
+    
+    # Migrate old string fields to TranslatableText
+    translatable_paths = [
+        "hero.title", "hero.subtitle", "hero.cta_text",
+        "about.title", "about.paragraph1", "about.paragraph2"
+    ]
+    settings = migrate_translatable_fields(settings, translatable_paths)
+    
+    # Migrate differentials
+    if "differentials" in settings:
+        for diff in settings["differentials"]:
+            if isinstance(diff.get("title"), str):
+                diff["title"] = {"pt": diff["title"], "en": diff["title"], "es": diff["title"]}
+            if isinstance(diff.get("description"), str):
+                diff["description"] = {"pt": diff["description"], "en": diff["description"], "es": diff["description"]}
+    
+    # Migrate stats
+    if "stats" in settings:
+        for stat in settings["stats"]:
+            if isinstance(stat.get("label"), str):
+                stat["label"] = {"pt": stat["label"], "en": stat["label"], "es": stat["label"]}
     
     if isinstance(settings.get("updated_at"), str):
         settings["updated_at"] = datetime.fromisoformat(settings["updated_at"])
