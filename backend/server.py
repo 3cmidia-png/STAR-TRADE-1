@@ -64,7 +64,49 @@ class HeroSettings(BaseModel):
     title: str = "Conectando o Mundo através do Comércio Internacional"
     subtitle: str = "Soluções completas em importação e exportação"
     cta_text: str = "Fale com um Especialista"
-    video_url: str = "https://videos.pexels.com/video-files/2519660/2519660-hd_1920_1080_24fps.mp4"
+    video_url: str = "https://videos.pexels.com/video-files/6857819/6857819-hd_1920_1080_24fps.mp4"
+    # Positioning
+    vertical_align: str = "center"  # top, center, bottom
+    vertical_offset: int = 0  # -200 to +200 px
+    horizontal_align: str = "center"  # left, center, right
+    # Title styling
+    title_size: int = 48  # 24-72px
+    title_weight: str = "bold"  # normal, medium, semibold, bold
+    title_uppercase: bool = True
+    title_max_width: int = 800  # px
+    # Subtitle styling
+    subtitle_size: int = 20  # 14-32px
+    subtitle_weight: str = "normal"
+    subtitle_max_width: int = 700
+    # CTA Button
+    cta_size: str = "large"  # small, medium, large, xlarge
+    cta_style: str = "filled"  # filled, outline, gradient
+    # Video/Overlay
+    overlay_opacity: int = 60  # 0-100%
+    overlay_color: str = "#000000"
+    video_zoom: int = 100  # 100-150%
+    # Animation
+    animation_enabled: bool = True
+    animation_type: str = "fade-up"  # fade-in, fade-up, slide-left, zoom-in
+
+class LogoSettings(BaseModel):
+    # Desktop
+    desktop_width: int = 180  # 50-400px
+    desktop_height: int = 0  # 0 = auto
+    # Tablet
+    tablet_width: int = 150
+    # Mobile
+    mobile_width: int = 120
+    # Position
+    position: str = "left"  # left, center, right
+    margin_left: int = 24
+    margin_right: int = 24
+    # Scroll behavior
+    shrink_on_scroll: bool = True
+    scroll_width: int = 120
+    # Effects
+    brightness: int = 100  # 50-150%
+    hover_effect: str = "none"  # none, grow, glow, rotate
 
 class AboutSettings(BaseModel):
     title: str = "Sobre a Star Trade"
