@@ -60,34 +60,69 @@ class TokenResponse(BaseModel):
     user: UserBase
 
 # Site Settings
+class TranslatableText(BaseModel):
+    pt: str = ""
+    en: str = ""
+    es: str = ""
+
 class HeroSettings(BaseModel):
-    title: str = "Conectando o Mundo através do Comércio Internacional"
-    subtitle: str = "Soluções completas em importação e exportação"
-    cta_text: str = "Fale com um Especialista"
-    video_url: str = "https://videos.pexels.com/video-files/6857819/6857819-hd_1920_1080_24fps.mp4"
+    title: TranslatableText = Field(default_factory=lambda: TranslatableText(
+        pt="Conectando o Mundo através do Comércio Internacional",
+        en="Connecting the World Through International Trade",
+        es="Conectando el Mundo a través del Comercio Internacional"
+    ))
+    subtitle: TranslatableText = Field(default_factory=lambda: TranslatableText(
+        pt="Soluções completas em importação e exportação",
+        en="Complete import and export solutions",
+        es="Soluciones completas en importación y exportación"
+    ))
+    cta_text: TranslatableText = Field(default_factory=lambda: TranslatableText(
+        pt="Fale com um Especialista",
+        en="Talk to a Specialist",
+        es="Hable con un Especialista"
+    ))
+    video_url: str = "https://videos.pexels.com/video-files/3226072/3226072-hd_1920_1080_24fps.mp4"
     # Positioning
-    vertical_align: str = "center"  # top, center, bottom
-    vertical_offset: int = 0  # -200 to +200 px
-    horizontal_align: str = "center"  # left, center, right
+    vertical_align: str = "center"
+    vertical_offset: int = 0
+    horizontal_align: str = "center"
     # Title styling
-    title_size: int = 48  # 24-72px
-    title_weight: str = "bold"  # normal, medium, semibold, bold
+    title_size: int = 48
+    title_weight: str = "bold"
     title_uppercase: bool = True
-    title_max_width: int = 800  # px
+    title_max_width: int = 800
     # Subtitle styling
-    subtitle_size: int = 20  # 14-32px
+    subtitle_size: int = 20
     subtitle_weight: str = "normal"
     subtitle_max_width: int = 700
     # CTA Button
-    cta_size: str = "large"  # small, medium, large, xlarge
-    cta_style: str = "filled"  # filled, outline, gradient
+    cta_size: str = "large"
+    cta_style: str = "filled"
     # Video/Overlay
-    overlay_opacity: int = 60  # 0-100%
+    overlay_opacity: int = 60
     overlay_color: str = "#000000"
-    video_zoom: int = 100  # 100-150%
+    video_zoom: int = 100
     # Animation
     animation_enabled: bool = True
-    animation_type: str = "fade-up"  # fade-in, fade-up, slide-left, zoom-in
+    animation_type: str = "fade-up"
+
+class AboutSettings(BaseModel):
+    title: TranslatableText = Field(default_factory=lambda: TranslatableText(
+        pt="Sobre a Star Trade",
+        en="About Star Trade",
+        es="Acerca de Star Trade"
+    ))
+    paragraph1: TranslatableText = Field(default_factory=lambda: TranslatableText(
+        pt="A Star Trade é uma trading company especializada em soluções completas de importação e exportação. Nossa missão é conectar empresas ao mercado global com eficiência, segurança e inteligência comercial.",
+        en="Star Trade is a trading company specialized in complete import and export solutions. Our mission is to connect companies to the global market with efficiency, security and commercial intelligence.",
+        es="Star Trade es una empresa comercializadora especializada en soluciones completas de importación y exportación. Nuestra misión es conectar empresas al mercado global con eficiencia, seguridad e inteligencia comercial."
+    ))
+    paragraph2: TranslatableText = Field(default_factory=lambda: TranslatableText(
+        pt="Com anos de experiência no mercado, oferecemos assessoria completa: desde a cotação até a entrega final, incluindo despacho aduaneiro, planejamento logístico e consultoria tributária.",
+        en="With years of market experience, we offer complete advisory: from quotation to final delivery, including customs clearance, logistics planning and tax consulting.",
+        es="Con años de experiencia en el mercado, ofrecemos asesoría completa: desde la cotización hasta la entrega final, incluyendo despacho aduanero, planificación logística y consultoría tributaria."
+    ))
+    image_url: str = "https://images.unsplash.com/photo-1703194531119-e8b98a555cb6?q=85&w=1000&auto=format&fit=crop"
 
 class LogoSettings(BaseModel):
     # Desktop
