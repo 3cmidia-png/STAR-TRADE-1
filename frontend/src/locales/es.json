@@ -1,0 +1,104 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "about": "Quiénes Somos",
+    "areas": "Áreas de Actuación",
+    "blog": "Blog",
+    "contact": "Contacto"
+  },
+  "hero": {
+    "title": "Conectando el Mundo a través del Comercio Internacional",
+    "subtitle": "Soluciones completas en importación y exportación",
+    "cta": "Hable con un Especialista"
+  },
+  "differentials": {
+    "sectionTitle": "Nuestros Diferenciales",
+    "team": {
+      "title": "Equipo Especializado",
+      "description": "Profesionales con amplia experiencia en comercio exterior"
+    },
+    "agility": {
+      "title": "Agilidad",
+      "description": "Procesos optimizados para entregas a tiempo"
+    },
+    "security": {
+      "title": "Seguridad",
+      "description": "Gestión completa con total transparencia"
+    }
+  },
+  "about": {
+    "subtitle": "Conozca nuestra empresa",
+    "title": "Acerca de Star Trade",
+    "cta": "Contáctenos"
+  },
+  "areas": {
+    "subtitle": "Especialistas en segmentos estratégicos",
+    "title": "Áreas de Actuación",
+    "food": "Alimentos",
+    "stones": "Rocas Ornamentales",
+    "digital": "Comercio Digital",
+    "bikes": "Bicicletas Eléctricas",
+    "specialty": "NUESTRA ESPECIALIDAD",
+    "sector": "Sector",
+    "learnMore": "Saber Más"
+  },
+  "stats": {
+    "imports": "Importaciones Realizadas",
+    "projects": "Proyectos Completados",
+    "containers": "Contenedores/Mes",
+    "years": "Años de Experiencia"
+  },
+  "blog": {
+    "subtitle": "Mantente informado",
+    "title": "Blog y Noticias",
+    "readMore": "Leer Más",
+    "viewAll": "Ver Todas las Noticias",
+    "noNews": "Próximamente, novedades en el blog.",
+    "search": "Buscar publicaciones...",
+    "backToBlog": "Volver al Blog",
+    "backToSite": "Volver al Sitio",
+    "needHelp": "¿Necesita ayuda con importación o exportación?",
+    "contactUs": "Contáctenos y descubra cómo podemos ayudar a su empresa.",
+    "talkToUs": "Hable con Nosotros",
+    "notFound": "Publicación no encontrada"
+  },
+  "contact": {
+    "subtitle": "Hable con nosotros",
+    "title": "Contáctenos",
+    "form": {
+      "name": "Nombre",
+      "email": "Correo",
+      "phone": "Teléfono",
+      "company": "Empresa",
+      "message": "Mensaje",
+      "submit": "Enviar Mensaje",
+      "sending": "Enviando...",
+      "namePlaceholder": "Su nombre",
+      "emailPlaceholder": "su@correo.com",
+      "phonePlaceholder": "+34 666 123 456",
+      "companyPlaceholder": "Nombre de la empresa",
+      "messagePlaceholder": "¿Cómo podemos ayudar?"
+    },
+    "info": {
+      "address": "Dirección",
+      "phone": "Teléfono",
+      "email": "Correo"
+    },
+    "social": "Síguenos en las Redes Sociales",
+    "success": "¡Mensaje enviado con éxito! Nos pondremos en contacto pronto.",
+    "error": "Error al enviar mensaje. Inténtelo de nuevo."
+  },
+  "footer": {
+    "description": "Empresa comercializadora especializada en soluciones completas de importación y exportación, conectando empresas al mercado global.",
+    "quickLinks": "Enlaces Rápidos",
+    "newsletter": "Boletín",
+    "newsletterText": "Reciba novedades sobre comercio exterior.",
+    "subscribe": "Suscribirse",
+    "emailPlaceholder": "Su correo",
+    "copyright": "© 2026 Star Trade. Todos los derechos reservados."
+  },
+  "common": {
+    "loading": "Cargando...",
+    "required": "obligatorio"
+  }
+}

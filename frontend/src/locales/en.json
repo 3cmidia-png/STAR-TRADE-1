@@ -1,0 +1,104 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About Us",
+    "areas": "Business Areas",
+    "blog": "Blog",
+    "contact": "Contact"
+  },
+  "hero": {
+    "title": "Connecting the World Through International Trade",
+    "subtitle": "Complete import and export solutions",
+    "cta": "Talk to a Specialist"
+  },
+  "differentials": {
+    "sectionTitle": "Our Differentials",
+    "team": {
+      "title": "Specialized Team",
+      "description": "Professionals with extensive experience in foreign trade"
+    },
+    "agility": {
+      "title": "Agility",
+      "description": "Optimized processes for on-time deliveries"
+    },
+    "security": {
+      "title": "Security",
+      "description": "Complete management with total transparency"
+    }
+  },
+  "about": {
+    "subtitle": "Get to know our company",
+    "title": "About Star Trade",
+    "cta": "Contact Us"
+  },
+  "areas": {
+    "subtitle": "Specialists in strategic segments",
+    "title": "Business Areas",
+    "food": "Food Products",
+    "stones": "Ornamental Stones",
+    "digital": "Digital Commerce",
+    "bikes": "Electric Bicycles",
+    "specialty": "OUR SPECIALTY",
+    "sector": "Sector",
+    "learnMore": "Learn More"
+  },
+  "stats": {
+    "imports": "Imports Completed",
+    "projects": "Projects Completed",
+    "containers": "Containers/Month",
+    "years": "Years of Experience"
+  },
+  "blog": {
+    "subtitle": "Stay updated",
+    "title": "Blog & News",
+    "readMore": "Read More",
+    "viewAll": "View All News",
+    "noNews": "News coming soon.",
+    "search": "Search posts...",
+    "backToBlog": "Back to Blog",
+    "backToSite": "Back to Site",
+    "needHelp": "Need help with import or export?",
+    "contactUs": "Contact us and discover how we can help your company.",
+    "talkToUs": "Talk to Us",
+    "notFound": "Post not found"
+  },
+  "contact": {
+    "subtitle": "Talk to us",
+    "title": "Contact Us",
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "company": "Company",
+      "message": "Message",
+      "submit": "Send Message",
+      "sending": "Sending...",
+      "namePlaceholder": "Your name",
+      "emailPlaceholder": "your@email.com",
+      "phonePlaceholder": "+1 (555) 123-4567",
+      "companyPlaceholder": "Company name",
+      "messagePlaceholder": "How can we help?"
+    },
+    "info": {
+      "address": "Address",
+      "phone": "Phone",
+      "email": "Email"
+    },
+    "social": "Follow Us on Social Media",
+    "success": "Message sent successfully! We will contact you soon.",
+    "error": "Error sending message. Please try again."
+  },
+  "footer": {
+    "description": "Trading company specialized in complete import and export solutions, connecting businesses to the global market.",
+    "quickLinks": "Quick Links",
+    "newsletter": "Newsletter",
+    "newsletterText": "Receive news about foreign trade.",
+    "subscribe": "Subscribe",
+    "emailPlaceholder": "Your email",
+    "copyright": "© 2026 Star Trade. All rights reserved."
+  },
+  "common": {
+    "loading": "Loading...",
+    "required": "required"
+  }
+}
