@@ -445,9 +445,9 @@ export default function Landing() {
                   {getIcon(diff.icon)}
                 </div>
                 <h3 className="font-['Oswald'] text-xl font-semibold text-slate-900 uppercase tracking-wide mb-3">
-                  {diff.title}
+                  {getText(diff.title)}
                 </h3>
-                <p className="text-slate-600 leading-relaxed">{diff.description}</p>
+                <p className="text-slate-600 leading-relaxed">{getText(diff.description)}</p>
               </div>
             ))}
           </div>
