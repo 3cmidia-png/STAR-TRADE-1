@@ -5,6 +5,15 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Slider } from "@/components/ui/slider";
+import { Switch } from "@/components/ui/switch";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { toast } from "sonner";
 import {
   Save,
@@ -15,6 +24,9 @@ import {
   BarChart3,
   Phone,
   Palette,
+  Move,
+  Maximize,
+  Globe,
 } from "lucide-react";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
@@ -31,7 +43,47 @@ export default function SettingsAdmin() {
   const fetchSettings = async () => {
     try {
       const response = await axios.get(`${API}/settings`);
-      setSettings(response.data);
+      // Ensure logo_settings exists
+      const data = response.data;
+      if (!data.logo_settings) {
+        data.logo_settings = {
+          desktop_width: 180,
+          desktop_height: 0,
+          tablet_width: 150,
+          mobile_width: 120,
+          position: "left",
+          margin_left: 24,
+          margin_right: 24,
+          shrink_on_scroll: true,
+          scroll_width: 120,
+          brightness: 100,
+          hover_effect: "none",
+        };
+      }
+      // Ensure hero has all new fields
+      if (!data.hero.vertical_align) {
+        data.hero = {
+          ...data.hero,
+          vertical_align: "center",
+          vertical_offset: 0,
+          horizontal_align: "center",
+          title_size: 48,
+          title_weight: "bold",
+          title_uppercase: true,
+          title_max_width: 800,
+          subtitle_size: 20,
+          subtitle_weight: "normal",
+          subtitle_max_width: 700,
+          cta_size: "large",
+          cta_style: "filled",
+          overlay_opacity: 60,
+          overlay_color: "#000000",
+          video_zoom: 100,
+          animation_enabled: true,
+          animation_type: "fade-up",
+        };
+      }
+      setSettings(data);
     } catch (error) {
       toast.error("Erro ao carregar configurações");
     } finally {
@@ -122,6 +174,10 @@ export default function SettingsAdmin() {
             <Video className="w-4 h-4" />
             Hero
           </TabsTrigger>
+          <TabsTrigger value="logo" className="gap-2">
+            <Image className="w-4 h-4" />
+            Logo
+          </TabsTrigger>
           <TabsTrigger value="about" className="gap-2">
             <Users className="w-4 h-4" />
             Quem Somos
@@ -144,59 +200,516 @@ export default function SettingsAdmin() {
           </TabsTrigger>
         </TabsList>
 
-        {/* Hero Tab */}
+        {/* Hero Tab - EXPANDED */}
         <TabsContent value="hero">
-          <Card className="border-0 shadow-sm">
-            <CardHeader>
-              <CardTitle className="text-lg">Seção Hero</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
-                  Título Principal
-                </label>
-                <Input
-                  value={settings.hero.title}
-                  onChange={(e) => updateField("hero.title", e.target.value)}
-                  className="rounded-sm"
-                  data-testid="hero-title-input"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
-                  Subtítulo
-                </label>
-                <Input
-                  value={settings.hero.subtitle}
-                  onChange={(e) => updateField("hero.subtitle", e.target.value)}
-                  className="rounded-sm"
-                  data-testid="hero-subtitle-input"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
-                  Texto do Botão CTA
-                </label>
-                <Input
-                  value={settings.hero.cta_text}
-                  onChange={(e) => updateField("hero.cta_text", e.target.value)}
-                  className="rounded-sm"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
-                  URL do Vídeo (MP4)
-                </label>
-                <Input
-                  value={settings.hero.video_url}
-                  onChange={(e) => updateField("hero.video_url", e.target.value)}
-                  className="rounded-sm"
-                  placeholder="https://..."
-                  data-testid="hero-video-input"
-                />
-              </div>
-            </CardContent>
-          </Card>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Content Settings */}
+            <Card className="border-0 shadow-sm">
+              <CardHeader>
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <Type className="w-5 h-5" />
+                  Conteúdo do Hero
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                    Título Principal
+                  </label>
+                  <Input
+                    value={settings.hero.title}
+                    onChange={(e) => updateField("hero.title", e.target.value)}
+                    className="rounded-sm"
+                    data-testid="hero-title-input"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                    Subtítulo
+                  </label>
+                  <Input
+                    value={settings.hero.subtitle}
+                    onChange={(e) => updateField("hero.subtitle", e.target.value)}
+                    className="rounded-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                    Texto do Botão CTA
+                  </label>
+                  <Input
+                    value={settings.hero.cta_text}
+                    onChange={(e) => updateField("hero.cta_text", e.target.value)}
+                    className="rounded-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                    URL do Vídeo (MP4)
+                  </label>
+                  <Input
+                    value={settings.hero.video_url}
+                    onChange={(e) => updateField("hero.video_url", e.target.value)}
+                    className="rounded-sm"
+                    placeholder="https://..."
+                    data-testid="hero-video-input"
+                  />
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Positioning Settings */}
+            <Card className="border-0 shadow-sm">
+              <CardHeader>
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <Move className="w-5 h-5" />
+                  Posicionamento
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                    Alinhamento Vertical
+                  </label>
+                  <Select
+                    value={settings.hero.vertical_align || "center"}
+                    onValueChange={(v) => updateField("hero.vertical_align", v)}
+                  >
+                    <SelectTrigger className="rounded-sm">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="top">Topo</SelectItem>
+                      <SelectItem value="center">Centro</SelectItem>
+                      <SelectItem value="bottom">Inferior</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                    Ajuste Fino Vertical: {settings.hero.vertical_offset || 0}px
+                  </label>
+                  <Slider
+                    value={[settings.hero.vertical_offset || 0]}
+                    onValueChange={([v]) => updateField("hero.vertical_offset", v)}
+                    min={-200}
+                    max={200}
+                    step={10}
+                    className="mt-2"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                    Alinhamento Horizontal
+                  </label>
+                  <Select
+                    value={settings.hero.horizontal_align || "center"}
+                    onValueChange={(v) => updateField("hero.horizontal_align", v)}
+                  >
+                    <SelectTrigger className="rounded-sm">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="left">Esquerda</SelectItem>
+                      <SelectItem value="center">Centro</SelectItem>
+                      <SelectItem value="right">Direita</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Typography Settings */}
+            <Card className="border-0 shadow-sm">
+              <CardHeader>
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <Maximize className="w-5 h-5" />
+                  Tamanhos e Estilos
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                    Tamanho do Título: {settings.hero.title_size || 48}px
+                  </label>
+                  <Slider
+                    value={[settings.hero.title_size || 48]}
+                    onValueChange={([v]) => updateField("hero.title_size", v)}
+                    min={24}
+                    max={72}
+                    step={2}
+                    className="mt-2"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                    Peso do Título
+                  </label>
+                  <Select
+                    value={settings.hero.title_weight || "bold"}
+                    onValueChange={(v) => updateField("hero.title_weight", v)}
+                  >
+                    <SelectTrigger className="rounded-sm">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="normal">Normal</SelectItem>
+                      <SelectItem value="medium">Médio</SelectItem>
+                      <SelectItem value="semibold">Semibold</SelectItem>
+                      <SelectItem value="bold">Bold</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium text-slate-700">
+                    Título em MAIÚSCULAS
+                  </span>
+                  <Switch
+                    checked={settings.hero.title_uppercase !== false}
+                    onCheckedChange={(v) => updateField("hero.title_uppercase", v)}
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                    Tamanho do Subtítulo: {settings.hero.subtitle_size || 20}px
+                  </label>
+                  <Slider
+                    value={[settings.hero.subtitle_size || 20]}
+                    onValueChange={([v]) => updateField("hero.subtitle_size", v)}
+                    min={14}
+                    max={32}
+                    step={1}
+                    className="mt-2"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                    Tamanho do Botão CTA
+                  </label>
+                  <Select
+                    value={settings.hero.cta_size || "large"}
+                    onValueChange={(v) => updateField("hero.cta_size", v)}
+                  >
+                    <SelectTrigger className="rounded-sm">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="small">Pequeno</SelectItem>
+                      <SelectItem value="medium">Médio</SelectItem>
+                      <SelectItem value="large">Grande</SelectItem>
+                      <SelectItem value="xlarge">Extra Grande</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Overlay/Video Settings */}
+            <Card className="border-0 shadow-sm">
+              <CardHeader>
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <Video className="w-5 h-5" />
+                  Vídeo e Overlay
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                    Opacidade do Overlay: {settings.hero.overlay_opacity || 60}%
+                  </label>
+                  <Slider
+                    value={[settings.hero.overlay_opacity || 60]}
+                    onValueChange={([v]) => updateField("hero.overlay_opacity", v)}
+                    min={0}
+                    max={100}
+                    step={5}
+                    className="mt-2"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                    Cor do Overlay
+                  </label>
+                  <div className="flex gap-2">
+                    <input
+                      type="color"
+                      value={settings.hero.overlay_color || "#000000"}
+                      onChange={(e) => updateField("hero.overlay_color", e.target.value)}
+                      className="w-10 h-10 rounded-sm cursor-pointer"
+                    />
+                    <Input
+                      value={settings.hero.overlay_color || "#000000"}
+                      onChange={(e) => updateField("hero.overlay_color", e.target.value)}
+                      className="rounded-sm flex-1"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                    Zoom do Vídeo: {settings.hero.video_zoom || 100}%
+                  </label>
+                  <Slider
+                    value={[settings.hero.video_zoom || 100]}
+                    onValueChange={([v]) => updateField("hero.video_zoom", v)}
+                    min={100}
+                    max={150}
+                    step={5}
+                    className="mt-2"
+                  />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium text-slate-700">
+                    Animação de Entrada
+                  </span>
+                  <Switch
+                    checked={settings.hero.animation_enabled !== false}
+                    onCheckedChange={(v) => updateField("hero.animation_enabled", v)}
+                  />
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+
+        {/* Logo Tab - NEW */}
+        <TabsContent value="logo">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Logo Upload */}
+            <Card className="border-0 shadow-sm">
+              <CardHeader>
+                <CardTitle className="text-lg">Upload de Logo</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                    URL do Logo Principal
+                  </label>
+                  <Input
+                    value={settings.logo_url}
+                    onChange={(e) => updateField("logo_url", e.target.value)}
+                    className="rounded-sm"
+                    placeholder="https://..."
+                    data-testid="logo-url-input"
+                  />
+                  {settings.logo_url && (
+                    <div className="mt-4 p-4 bg-slate-100 rounded-sm">
+                      <img
+                        src={settings.logo_url}
+                        alt="Logo Preview"
+                        className="max-h-20 object-contain"
+                      />
+                    </div>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                    Logo Alternativa (fundo claro)
+                  </label>
+                  <Input
+                    value={settings.logo_dark_url || ""}
+                    onChange={(e) => updateField("logo_dark_url", e.target.value)}
+                    className="rounded-sm"
+                    placeholder="https://..."
+                  />
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Logo Sizing */}
+            <Card className="border-0 shadow-sm">
+              <CardHeader>
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <Maximize className="w-5 h-5" />
+                  Tamanho da Logo
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                    Largura Desktop: {settings.logo_settings?.desktop_width || 180}px
+                  </label>
+                  <Slider
+                    value={[settings.logo_settings?.desktop_width || 180]}
+                    onValueChange={([v]) => updateField("logo_settings.desktop_width", v)}
+                    min={50}
+                    max={400}
+                    step={10}
+                    className="mt-2"
+                  />
+                  <div className="flex justify-between text-xs text-slate-400 mt-1">
+                    <span>50px</span>
+                    <span>400px</span>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                    Largura Tablet: {settings.logo_settings?.tablet_width || 150}px
+                  </label>
+                  <Slider
+                    value={[settings.logo_settings?.tablet_width || 150]}
+                    onValueChange={([v]) => updateField("logo_settings.tablet_width", v)}
+                    min={50}
+                    max={300}
+                    step={10}
+                    className="mt-2"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                    Largura Mobile: {settings.logo_settings?.mobile_width || 120}px
+                  </label>
+                  <Slider
+                    value={[settings.logo_settings?.mobile_width || 120]}
+                    onValueChange={([v]) => updateField("logo_settings.mobile_width", v)}
+                    min={40}
+                    max={200}
+                    step={10}
+                    className="mt-2"
+                  />
+                </div>
+
+                {/* Quick Presets */}
+                <div className="pt-4 border-t">
+                  <p className="text-sm font-medium text-slate-700 mb-3">Presets Rápidos</p>
+                  <div className="flex flex-wrap gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        updateField("logo_settings.desktop_width", 120);
+                        updateField("logo_settings.tablet_width", 100);
+                        updateField("logo_settings.mobile_width", 80);
+                      }}
+                    >
+                      Pequena
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        updateField("logo_settings.desktop_width", 180);
+                        updateField("logo_settings.tablet_width", 150);
+                        updateField("logo_settings.mobile_width", 120);
+                      }}
+                    >
+                      Média
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        updateField("logo_settings.desktop_width", 250);
+                        updateField("logo_settings.tablet_width", 200);
+                        updateField("logo_settings.mobile_width", 160);
+                      }}
+                    >
+                      Grande
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        updateField("logo_settings.desktop_width", 350);
+                        updateField("logo_settings.tablet_width", 280);
+                        updateField("logo_settings.mobile_width", 180);
+                      }}
+                    >
+                      Extra Grande
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Scroll Behavior */}
+            <Card className="border-0 shadow-sm">
+              <CardHeader>
+                <CardTitle className="text-lg">Comportamento ao Scroll</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-medium text-slate-900">Reduzir ao Rolar</p>
+                    <p className="text-sm text-slate-500">Logo diminui quando rola a página</p>
+                  </div>
+                  <Switch
+                    checked={settings.logo_settings?.shrink_on_scroll !== false}
+                    onCheckedChange={(v) => updateField("logo_settings.shrink_on_scroll", v)}
+                  />
+                </div>
+
+                {settings.logo_settings?.shrink_on_scroll !== false && (
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">
+                      Largura Após Scroll: {settings.logo_settings?.scroll_width || 120}px
+                    </label>
+                    <Slider
+                      value={[settings.logo_settings?.scroll_width || 120]}
+                      onValueChange={([v]) => updateField("logo_settings.scroll_width", v)}
+                      min={50}
+                      max={200}
+                      step={10}
+                      className="mt-2"
+                    />
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Effects */}
+            <Card className="border-0 shadow-sm">
+              <CardHeader>
+                <CardTitle className="text-lg">Efeitos</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                    Brilho: {settings.logo_settings?.brightness || 100}%
+                  </label>
+                  <Slider
+                    value={[settings.logo_settings?.brightness || 100]}
+                    onValueChange={([v]) => updateField("logo_settings.brightness", v)}
+                    min={50}
+                    max={150}
+                    step={5}
+                    className="mt-2"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                    Efeito ao Hover
+                  </label>
+                  <Select
+                    value={settings.logo_settings?.hover_effect || "none"}
+                    onValueChange={(v) => updateField("logo_settings.hover_effect", v)}
+                  >
+                    <SelectTrigger className="rounded-sm">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="none">Nenhum</SelectItem>
+                      <SelectItem value="grow">Crescer</SelectItem>
+                      <SelectItem value="glow">Brilhar</SelectItem>
+                      <SelectItem value="rotate">Rotação Suave</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </TabsContent>
 
         {/* About Tab */}
@@ -502,77 +1015,71 @@ export default function SettingsAdmin() {
         <TabsContent value="appearance">
           <Card className="border-0 shadow-sm">
             <CardHeader>
-              <CardTitle className="text-lg">Aparência</CardTitle>
+              <CardTitle className="text-lg">Cores e Aparência</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
-                  URL do Logo
-                </label>
-                <Input
-                  value={settings.logo_url}
-                  onChange={(e) => updateField("logo_url", e.target.value)}
-                  className="rounded-sm"
-                  placeholder="https://..."
-                  data-testid="logo-url-input"
-                />
-                {settings.logo_url && (
-                  <img
-                    src={settings.logo_url}
-                    alt="Logo Preview"
-                    className="mt-2 h-16 object-contain"
-                  />
-                )}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div>
+                  <label className="block text-sm text-slate-600 mb-1">
+                    Cor Primária
+                  </label>
+                  <div className="flex gap-2">
+                    <input
+                      type="color"
+                      value={settings.colors.primary}
+                      onChange={(e) =>
+                        updateField("colors.primary", e.target.value)
+                      }
+                      className="w-10 h-10 rounded-sm cursor-pointer"
+                    />
+                    <Input
+                      value={settings.colors.primary}
+                      onChange={(e) =>
+                        updateField("colors.primary", e.target.value)
+                      }
+                      className="rounded-sm flex-1"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm text-slate-600 mb-1">
+                    Cor Secundária (Dourado)
+                  </label>
+                  <div className="flex gap-2">
+                    <input
+                      type="color"
+                      value={settings.colors.secondary}
+                      onChange={(e) =>
+                        updateField("colors.secondary", e.target.value)
+                      }
+                      className="w-10 h-10 rounded-sm cursor-pointer"
+                    />
+                    <Input
+                      value={settings.colors.secondary}
+                      onChange={(e) =>
+                        updateField("colors.secondary", e.target.value)
+                      }
+                      className="rounded-sm flex-1"
+                    />
+                  </div>
+                </div>
               </div>
 
               <div className="border-t pt-6">
-                <p className="font-medium text-slate-900 mb-4">Cores</p>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div>
-                    <label className="block text-sm text-slate-600 mb-1">
-                      Primária
-                    </label>
-                    <div className="flex gap-2">
-                      <input
-                        type="color"
-                        value={settings.colors.primary}
-                        onChange={(e) =>
-                          updateField("colors.primary", e.target.value)
-                        }
-                        className="w-10 h-10 rounded-sm cursor-pointer"
-                      />
-                      <Input
-                        value={settings.colors.primary}
-                        onChange={(e) =>
-                          updateField("colors.primary", e.target.value)
-                        }
-                        className="rounded-sm flex-1"
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block text-sm text-slate-600 mb-1">
-                      Secundária (Dourado)
-                    </label>
-                    <div className="flex gap-2">
-                      <input
-                        type="color"
-                        value={settings.colors.secondary}
-                        onChange={(e) =>
-                          updateField("colors.secondary", e.target.value)
-                        }
-                        className="w-10 h-10 rounded-sm cursor-pointer"
-                      />
-                      <Input
-                        value={settings.colors.secondary}
-                        onChange={(e) =>
-                          updateField("colors.secondary", e.target.value)
-                        }
-                        className="rounded-sm flex-1"
-                      />
-                    </div>
-                  </div>
-                </div>
+                <p className="font-medium text-slate-900 mb-4">Idioma Padrão</p>
+                <Select
+                  value={settings.default_language || "pt"}
+                  onValueChange={(v) => updateField("default_language", v)}
+                >
+                  <SelectTrigger className="rounded-sm w-48">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="pt">🇧🇷 Português</SelectItem>
+                    <SelectItem value="en">🇺🇸 English</SelectItem>
+                    <SelectItem value="es">🇪🇸 Español</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </CardContent>
           </Card>
