@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,6 +24,8 @@ import {
   X,
   ArrowRight,
   ChevronRight,
+  Globe,
+  ChevronDown,
 } from "lucide-react";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
@@ -37,12 +40,26 @@ const iconMap = {
   Bike: Bike,
 };
 
+const flagEmoji = {
+  pt: "🇧🇷",
+  en: "🇺🇸",
+  es: "🇪🇸",
+};
+
+const langNames = {
+  pt: "Português",
+  en: "English",
+  es: "Español",
+};
+
 export default function Landing() {
+  const { t, i18n } = useTranslation();
   const [settings, setSettings] = useState(null);
   const [areas, setAreas] = useState([]);
   const [blogPosts, setBlogPosts] = useState([]);
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [langMenuOpen, setLangMenuOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -55,6 +72,8 @@ export default function Landing() {
   const statsRef = useRef(null);
   const [statsVisible, setStatsVisible] = useState(false);
 
+  const currentLang = i18n.language?.substring(0, 2) || "pt";
+
   useEffect(() => {
     fetchData();
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -62,7 +81,6 @@ export default function Landing() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Stats animation observer
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -76,7 +94,6 @@ export default function Landing() {
     return () => observer.disconnect();
   }, [statsVisible]);
 
-  // Animate stats when visible
   useEffect(() => {
     if (statsVisible && settings?.stats) {
       settings.stats.forEach((stat, index) => {
@@ -115,10 +132,10 @@ export default function Landing() {
     setSubmitting(true);
     try {
       await axios.post(`${API}/contact`, formData);
-      toast.success("Mensagem enviada com sucesso! Entraremos em contato em breve.");
+      toast.success(t("contact.success"));
       setFormData({ name: "", email: "", phone: "", company: "", message: "" });
     } catch (error) {
-      toast.error("Erro ao enviar mensagem. Tente novamente.");
+      toast.error(t("contact.error"));
     } finally {
       setSubmitting(false);
     }
@@ -129,21 +146,98 @@ export default function Landing() {
     setMobileMenuOpen(false);
   };
 
+  const changeLanguage = (lang) => {
+    i18n.changeLanguage(lang);
+    setLangMenuOpen(false);
+  };
+
   const getIcon = (iconName) => {
     const IconComponent = iconMap[iconName];
     return IconComponent ? <IconComponent className="w-8 h-8" /> : null;
   };
+
+  // Get hero styles from settings
+  const getHeroStyles = () => {
+    if (!settings?.hero) return {};
+    const h = settings.hero;
+    
+    const verticalPosition = {
+      top: "items-start pt-32",
+      center: "items-center",
+      bottom: "items-end pb-32",
+    };
+
+    const horizontalAlign = {
+      left: "text-left items-start",
+      center: "text-center items-center",
+      right: "text-right items-end",
+    };
+
+    return {
+      container: `${verticalPosition[h.vertical_align] || "items-center"} ${horizontalAlign[h.horizontal_align] || "text-center items-center"}`,
+      titleSize: `text-[${h.title_size || 48}px]`,
+      titleStyle: {
+        fontSize: `${h.title_size || 48}px`,
+        fontWeight: h.title_weight === "bold" ? 700 : h.title_weight === "semibold" ? 600 : h.title_weight === "medium" ? 500 : 400,
+        textTransform: h.title_uppercase ? "uppercase" : "none",
+        maxWidth: `${h.title_max_width || 800}px`,
+        marginTop: `${h.vertical_offset || 0}px`,
+      },
+      subtitleStyle: {
+        fontSize: `${h.subtitle_size || 20}px`,
+        fontWeight: h.subtitle_weight === "semibold" ? 600 : h.subtitle_weight === "medium" ? 500 : 400,
+        maxWidth: `${h.subtitle_max_width || 700}px`,
+      },
+      overlayStyle: {
+        backgroundColor: h.overlay_color || "#000000",
+        opacity: (h.overlay_opacity || 60) / 100,
+      },
+      ctaSize: {
+        small: "px-6 py-3 text-sm",
+        medium: "px-8 py-4 text-base",
+        large: "px-10 py-5 text-base",
+        xlarge: "px-12 py-6 text-lg",
+      }[h.cta_size || "large"],
+    };
+  };
+
+  // Get logo styles from settings
+  const getLogoStyles = () => {
+    if (!settings?.logo_settings) {
+      return { width: isScrolled ? 120 : 180 };
+    }
+    const l = settings.logo_settings;
+    const baseWidth = l.desktop_width || 180;
+    const scrollWidth = l.scroll_width || 120;
+    
+    return {
+      width: l.shrink_on_scroll && isScrolled ? scrollWidth : baseWidth,
+      filter: `brightness(${l.brightness || 100}%)`,
+      transition: "all 0.3s ease",
+    };
+  };
+
+  const navItems = [
+    { key: "home", id: "home" },
+    { key: "about", id: "quem-somos" },
+    { key: "areas", id: "areas-de-atuacao" },
+    { key: "blog", id: "blog" },
+    { key: "contact", id: "contato" },
+  ];
 
   if (!settings) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50">
         <div className="animate-pulse flex flex-col items-center gap-4">
           <div className="w-16 h-16 bg-[#1E3A8A] rounded-sm"></div>
-          <p className="text-slate-500 font-medium">Carregando...</p>
+          <p className="text-slate-500 font-medium">{t("common.loading")}</p>
         </div>
       </div>
     );
   }
+
+  const heroStyles = getHeroStyles();
+  const logoStyles = getLogoStyles();
 
   return (
     <div className="min-h-screen bg-white">
@@ -159,61 +253,114 @@ export default function Landing() {
             <img
               src={settings.logo_url}
               alt="Star Trade"
-              className="h-10 md:h-12 object-contain"
+              className="object-contain transition-all duration-300"
+              style={{ height: logoStyles.width * 0.4, ...logoStyles }}
               data-testid="logo"
             />
           </a>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center gap-8">
-            {["Home", "Quem Somos", "Áreas de Atuação", "Blog", "Contato"].map(
-              (item) => (
-                <button
-                  key={item}
-                  onClick={() =>
-                    scrollToSection(item.toLowerCase().replace(/ /g, "-"))
-                  }
-                  className={`nav-link uppercase text-sm tracking-wider font-medium transition-colors ${
-                    isScrolled ? "text-slate-700 hover:text-[#1E3A8A]" : "text-white hover:text-white/80"
-                  }`}
-                  data-testid={`nav-${item.toLowerCase().replace(/ /g, "-")}`}
-                >
-                  {item}
-                </button>
-              )
-            )}
+          <div className="hidden md:flex items-center gap-6">
+            {navItems.map((item) => (
+              <button
+                key={item.key}
+                onClick={() => scrollToSection(item.id)}
+                className={`nav-link uppercase text-sm tracking-wider font-medium transition-colors ${
+                  isScrolled ? "text-slate-700 hover:text-[#1E3A8A]" : "text-white hover:text-white/80"
+                }`}
+                data-testid={`nav-${item.key}`}
+              >
+                {t(`nav.${item.key}`)}
+              </button>
+            ))}
+
+            {/* Language Selector */}
+            <div className="relative">
+              <button
+                onClick={() => setLangMenuOpen(!langMenuOpen)}
+                className={`flex items-center gap-2 px-3 py-2 rounded-sm transition-colors ${
+                  isScrolled ? "text-slate-700 hover:bg-slate-100" : "text-white hover:bg-white/10"
+                }`}
+                data-testid="lang-selector"
+              >
+                <span className="text-lg">{flagEmoji[currentLang]}</span>
+                <span className="text-sm uppercase">{currentLang}</span>
+                <ChevronDown className="w-4 h-4" />
+              </button>
+
+              {langMenuOpen && (
+                <div className="absolute right-0 top-full mt-2 bg-white shadow-lg rounded-sm py-2 min-w-[150px]">
+                  {Object.keys(flagEmoji).map((lang) => (
+                    <button
+                      key={lang}
+                      onClick={() => changeLanguage(lang)}
+                      className={`w-full px-4 py-2 text-left flex items-center gap-3 hover:bg-slate-50 ${
+                        currentLang === lang ? "bg-slate-50 text-[#1E3A8A]" : "text-slate-700"
+                      }`}
+                      data-testid={`lang-${lang}`}
+                    >
+                      <span className="text-lg">{flagEmoji[lang]}</span>
+                      <span className="text-sm">{langNames[lang]}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Mobile Menu Button */}
-          <button
-            className="md:hidden p-2"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            data-testid="mobile-menu-btn"
-          >
-            {mobileMenuOpen ? (
-              <X className={isScrolled ? "text-slate-700" : "text-white"} />
-            ) : (
-              <Menu className={isScrolled ? "text-slate-700" : "text-white"} />
-            )}
-          </button>
+          <div className="md:hidden flex items-center gap-3">
+            {/* Mobile Lang */}
+            <button
+              onClick={() => setLangMenuOpen(!langMenuOpen)}
+              className={`p-2 ${isScrolled ? "text-slate-700" : "text-white"}`}
+            >
+              <Globe className="w-5 h-5" />
+            </button>
+            <button
+              className="p-2"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              data-testid="mobile-menu-btn"
+            >
+              {mobileMenuOpen ? (
+                <X className={isScrolled ? "text-slate-700" : "text-white"} />
+              ) : (
+                <Menu className={isScrolled ? "text-slate-700" : "text-white"} />
+              )}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
           <div className="md:hidden absolute top-full left-0 right-0 bg-white shadow-lg py-4">
-            {["Home", "Quem Somos", "Áreas de Atuação", "Blog", "Contato"].map(
-              (item) => (
-                <button
-                  key={item}
-                  onClick={() =>
-                    scrollToSection(item.toLowerCase().replace(/ /g, "-"))
-                  }
-                  className="block w-full text-left px-6 py-3 text-slate-700 hover:bg-slate-50 uppercase text-sm tracking-wider font-medium"
-                >
-                  {item}
-                </button>
-              )
-            )}
+            {navItems.map((item) => (
+              <button
+                key={item.key}
+                onClick={() => scrollToSection(item.id)}
+                className="block w-full text-left px-6 py-3 text-slate-700 hover:bg-slate-50 uppercase text-sm tracking-wider font-medium"
+              >
+                {t(`nav.${item.key}`)}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Mobile Language Menu */}
+        {langMenuOpen && (
+          <div className="md:hidden absolute top-full right-4 mt-2 bg-white shadow-lg rounded-sm py-2 min-w-[150px]">
+            {Object.keys(flagEmoji).map((lang) => (
+              <button
+                key={lang}
+                onClick={() => changeLanguage(lang)}
+                className={`w-full px-4 py-2 text-left flex items-center gap-3 hover:bg-slate-50 ${
+                  currentLang === lang ? "bg-slate-50 text-[#1E3A8A]" : "text-slate-700"
+                }`}
+              >
+                <span className="text-lg">{flagEmoji[lang]}</span>
+                <span className="text-sm">{langNames[lang]}</span>
+              </button>
+            ))}
           </div>
         )}
       </nav>
@@ -221,7 +368,7 @@ export default function Landing() {
       {/* Hero Section */}
       <section
         id="home"
-        className="relative min-h-screen flex items-center justify-center video-container"
+        className={`relative min-h-screen flex flex-col justify-center video-container ${heroStyles.container}`}
         data-testid="hero-section"
       >
         <video
@@ -230,25 +377,33 @@ export default function Landing() {
           muted
           playsInline
           className="absolute inset-0 w-full h-full object-cover"
-          poster="https://images.pexels.com/videos/26893828/pexels-photo-26893828.jpeg?auto=compress&cs=tinysrgb&w=1920"
+          style={{ transform: `scale(${(settings.hero?.video_zoom || 100) / 100})` }}
+          poster="https://images.pexels.com/videos/6857819/pexels-photo-6857819.jpeg?auto=compress&cs=tinysrgb&w=1920"
         >
           <source src={settings.hero.video_url} type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/70"></div>
+        <div 
+          className="absolute inset-0"
+          style={heroStyles.overlayStyle}
+        ></div>
         
-        <div className="relative z-10 text-center px-6 max-w-5xl mx-auto">
+        <div className={`relative z-10 px-6 max-w-5xl mx-auto flex flex-col ${heroStyles.container}`}>
           <h1
-            className="font-['Oswald'] text-4xl md:text-6xl lg:text-7xl font-bold text-white uppercase tracking-tight mb-6 animate-fadeInUp"
+            className="font-['Oswald'] text-white tracking-tight mb-6"
+            style={heroStyles.titleStyle}
             data-testid="hero-title"
           >
             {settings.hero.title}
           </h1>
-          <p className="text-lg md:text-xl text-white/90 mb-10 max-w-2xl mx-auto animate-fadeInUp delay-200">
+          <p 
+            className="text-white/90 mb-10"
+            style={heroStyles.subtitleStyle}
+          >
             {settings.hero.subtitle}
           </p>
           <Button
             onClick={() => scrollToSection("contato")}
-            className="bg-[#1E3A8A] hover:bg-[#172554] text-white px-10 py-6 text-base uppercase tracking-wider rounded-sm animate-fadeInUp delay-300"
+            className={`bg-[#1E3A8A] hover:bg-[#172554] text-white uppercase tracking-wider rounded-sm ${heroStyles.ctaSize}`}
             data-testid="hero-cta"
           >
             {settings.hero.cta_text}
@@ -297,7 +452,7 @@ export default function Landing() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div>
               <p className="text-sm font-medium tracking-widest uppercase text-[#1E3A8A] mb-4">
-                Conheça nossa empresa
+                {t("about.subtitle")}
               </p>
               <h2 className="font-['Oswald'] text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 uppercase tracking-tight mb-8">
                 {settings.about.title}
@@ -314,7 +469,7 @@ export default function Landing() {
                 className="border-[#1E3A8A] text-[#1E3A8A] hover:bg-[#1E3A8A] hover:text-white px-8 py-6 uppercase tracking-wider rounded-sm"
                 data-testid="about-cta"
               >
-                Entre em Contato
+                {t("about.cta")}
                 <ChevronRight className="ml-2 w-4 h-4" />
               </Button>
             </div>
@@ -333,17 +488,17 @@ export default function Landing() {
 
       {/* Areas Section */}
       <section
-        id="áreas-de-atuação"
+        id="areas-de-atuacao"
         className="py-20 md:py-28 bg-white"
         data-testid="areas-section"
       >
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
             <p className="text-sm font-medium tracking-widest uppercase text-[#1E3A8A] mb-4">
-              Especialistas em segmentos estratégicos
+              {t("areas.subtitle")}
             </p>
             <h2 className="font-['Oswald'] text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 uppercase tracking-tight">
-              Áreas de Atuação
+              {t("areas.title")}
             </h2>
           </div>
 
@@ -366,7 +521,6 @@ export default function Landing() {
                 ></div>
 
                 <div className="content absolute inset-0 p-8 flex flex-col justify-end">
-                  {/* Badge */}
                   <span
                     className={`inline-block w-fit px-3 py-1 text-xs font-bold uppercase tracking-widest rounded-sm mb-4 ${
                       area.is_specialty
@@ -375,10 +529,9 @@ export default function Landing() {
                     }`}
                     data-testid={`area-badge-${index}`}
                   >
-                    {area.badge_text}
+                    {area.is_specialty ? t("areas.specialty") : area.badge_text}
                   </span>
 
-                  {/* Icon & Title */}
                   <div className="flex items-center gap-4 mb-4">
                     <div className="w-12 h-12 flex items-center justify-center text-white bg-white/20 rounded-sm backdrop-blur-sm">
                       {getIcon(area.icon)}
@@ -388,17 +541,15 @@ export default function Landing() {
                     </h3>
                   </div>
 
-                  {/* Description */}
                   <p className="text-white/90 leading-relaxed mb-6 line-clamp-3">
                     {area.description}
                   </p>
 
-                  {/* Button */}
                   <Button
                     className="w-fit bg-white text-[#1E3A8A] hover:bg-[#1E3A8A] hover:text-white px-6 py-3 uppercase tracking-wider rounded-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                     data-testid={`area-btn-${index}`}
                   >
-                    {area.button_text}
+                    {area.button_text || t("areas.learnMore")}
                     <ArrowRight className="ml-2 w-4 h-4" />
                   </Button>
                 </div>
@@ -450,10 +601,10 @@ export default function Landing() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
             <p className="text-sm font-medium tracking-widest uppercase text-[#1E3A8A] mb-4">
-              Fique por dentro
+              {t("blog.subtitle")}
             </p>
             <h2 className="font-['Oswald'] text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 uppercase tracking-tight">
-              Blog & Notícias
+              {t("blog.title")}
             </h2>
           </div>
 
@@ -478,14 +629,14 @@ export default function Landing() {
                   </div>
                   <div className="p-6">
                     <p className="text-sm text-[#1E3A8A] font-medium mb-2">
-                      {new Date(post.created_at).toLocaleDateString("pt-BR")}
+                      {new Date(post.created_at).toLocaleDateString(currentLang === "en" ? "en-US" : currentLang === "es" ? "es-ES" : "pt-BR")}
                     </p>
                     <h3 className="font-['Oswald'] text-xl font-semibold text-slate-900 uppercase tracking-wide mb-3 line-clamp-2">
                       {post.title}
                     </h3>
                     <p className="text-slate-600 line-clamp-3 mb-4">{post.excerpt}</p>
                     <span className="text-[#1E3A8A] font-medium uppercase text-sm tracking-wider inline-flex items-center">
-                      Leia Mais
+                      {t("blog.readMore")}
                       <ChevronRight className="ml-1 w-4 h-4" />
                     </span>
                   </div>
@@ -494,7 +645,7 @@ export default function Landing() {
             </div>
           ) : (
             <div className="text-center py-12">
-              <p className="text-slate-500">Em breve, novidades no blog.</p>
+              <p className="text-slate-500">{t("blog.noNews")}</p>
             </div>
           )}
 
@@ -506,7 +657,7 @@ export default function Landing() {
                 className="border-[#1E3A8A] text-[#1E3A8A] hover:bg-[#1E3A8A] hover:text-white px-8 py-6 uppercase tracking-wider rounded-sm"
               >
                 <a href="/blog" data-testid="blog-view-all">
-                  Ver Todas as Notícias
+                  {t("blog.viewAll")}
                   <ArrowRight className="ml-2 w-4 h-4" />
                 </a>
               </Button>
@@ -524,20 +675,19 @@ export default function Landing() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
             <p className="text-sm font-medium tracking-widest uppercase text-[#1E3A8A] mb-4">
-              Fale conosco
+              {t("contact.subtitle")}
             </p>
             <h2 className="font-['Oswald'] text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 uppercase tracking-tight">
-              Entre em Contato
+              {t("contact.title")}
             </h2>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
-            {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-6" data-testid="contact-form">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Nome *
+                    {t("contact.form.name")} *
                   </label>
                   <Input
                     required
@@ -546,13 +696,13 @@ export default function Landing() {
                       setFormData({ ...formData, name: e.target.value })
                     }
                     className="rounded-sm border-slate-200 focus:border-[#1E3A8A] h-12"
-                    placeholder="Seu nome"
+                    placeholder={t("contact.form.namePlaceholder")}
                     data-testid="contact-name"
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Email *
+                    {t("contact.form.email")} *
                   </label>
                   <Input
                     required
@@ -562,7 +712,7 @@ export default function Landing() {
                       setFormData({ ...formData, email: e.target.value })
                     }
                     className="rounded-sm border-slate-200 focus:border-[#1E3A8A] h-12"
-                    placeholder="seu@email.com"
+                    placeholder={t("contact.form.emailPlaceholder")}
                     data-testid="contact-email"
                   />
                 </div>
@@ -570,7 +720,7 @@ export default function Landing() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Telefone
+                    {t("contact.form.phone")}
                   </label>
                   <Input
                     value={formData.phone}
@@ -578,13 +728,13 @@ export default function Landing() {
                       setFormData({ ...formData, phone: e.target.value })
                     }
                     className="rounded-sm border-slate-200 focus:border-[#1E3A8A] h-12"
-                    placeholder="(11) 99999-9999"
+                    placeholder={t("contact.form.phonePlaceholder")}
                     data-testid="contact-phone"
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Empresa
+                    {t("contact.form.company")}
                   </label>
                   <Input
                     value={formData.company}
@@ -592,14 +742,14 @@ export default function Landing() {
                       setFormData({ ...formData, company: e.target.value })
                     }
                     className="rounded-sm border-slate-200 focus:border-[#1E3A8A] h-12"
-                    placeholder="Nome da empresa"
+                    placeholder={t("contact.form.companyPlaceholder")}
                     data-testid="contact-company"
                   />
                 </div>
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">
-                  Mensagem *
+                  {t("contact.form.message")} *
                 </label>
                 <Textarea
                   required
@@ -608,7 +758,7 @@ export default function Landing() {
                     setFormData({ ...formData, message: e.target.value })
                   }
                   className="rounded-sm border-slate-200 focus:border-[#1E3A8A] min-h-[150px]"
-                  placeholder="Como podemos ajudar?"
+                  placeholder={t("contact.form.messagePlaceholder")}
                   data-testid="contact-message"
                 />
               </div>
@@ -618,19 +768,18 @@ export default function Landing() {
                 className="w-full md:w-auto bg-[#1E3A8A] hover:bg-[#172554] text-white px-10 py-6 uppercase tracking-wider rounded-sm"
                 data-testid="contact-submit"
               >
-                {submitting ? "Enviando..." : "Enviar Mensagem"}
+                {submitting ? t("contact.form.sending") : t("contact.form.submit")}
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </form>
 
-            {/* Contact Info */}
             <div className="space-y-8">
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 flex items-center justify-center bg-[#1E3A8A]/5 text-[#1E3A8A] rounded-sm flex-shrink-0">
                   <MapPin className="w-5 h-5" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-slate-900 mb-1">Endereço</h4>
+                  <h4 className="font-semibold text-slate-900 mb-1">{t("contact.info.address")}</h4>
                   <p className="text-slate-600">{settings.contact.address}</p>
                 </div>
               </div>
@@ -640,7 +789,7 @@ export default function Landing() {
                   <Phone className="w-5 h-5" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-slate-900 mb-1">Telefone</h4>
+                  <h4 className="font-semibold text-slate-900 mb-1">{t("contact.info.phone")}</h4>
                   <p className="text-slate-600">{settings.contact.phone}</p>
                 </div>
               </div>
@@ -650,15 +799,14 @@ export default function Landing() {
                   <Mail className="w-5 h-5" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-slate-900 mb-1">Email</h4>
+                  <h4 className="font-semibold text-slate-900 mb-1">{t("contact.info.email")}</h4>
                   <p className="text-slate-600">{settings.contact.email}</p>
                 </div>
               </div>
 
-              {/* Social Links */}
               <div className="pt-6 border-t border-slate-200">
                 <h4 className="font-semibold text-slate-900 mb-4">
-                  Siga-nos nas Redes Sociais
+                  {t("contact.social")}
                 </h4>
                 <div className="flex gap-4">
                   {settings.contact.linkedin && (
@@ -705,7 +853,6 @@ export default function Landing() {
       <footer className="bg-[#0F172A] text-white py-16" data-testid="footer">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
-            {/* Logo & Description */}
             <div>
               <img
                 src={settings.logo_url}
@@ -713,49 +860,42 @@ export default function Landing() {
                 className="h-12 mb-6 brightness-0 invert"
               />
               <p className="text-slate-400 leading-relaxed">
-                Trading company especializada em soluções completas de importação e
-                exportação, conectando empresas ao mercado global.
+                {t("footer.description")}
               </p>
             </div>
 
-            {/* Quick Links */}
             <div>
               <h4 className="font-['Oswald'] text-lg font-semibold uppercase tracking-wider mb-6">
-                Links Rápidos
+                {t("footer.quickLinks")}
               </h4>
               <ul className="space-y-3">
-                {["Home", "Quem Somos", "Áreas de Atuação", "Blog", "Contato"].map(
-                  (item) => (
-                    <li key={item}>
-                      <button
-                        onClick={() =>
-                          scrollToSection(item.toLowerCase().replace(/ /g, "-"))
-                        }
-                        className="text-slate-400 hover:text-white transition-colors"
-                      >
-                        {item}
-                      </button>
-                    </li>
-                  )
-                )}
+                {navItems.map((item) => (
+                  <li key={item.key}>
+                    <button
+                      onClick={() => scrollToSection(item.id)}
+                      className="text-slate-400 hover:text-white transition-colors"
+                    >
+                      {t(`nav.${item.key}`)}
+                    </button>
+                  </li>
+                ))}
               </ul>
             </div>
 
-            {/* Newsletter */}
             <div>
               <h4 className="font-['Oswald'] text-lg font-semibold uppercase tracking-wider mb-6">
-                Newsletter
+                {t("footer.newsletter")}
               </h4>
               <p className="text-slate-400 mb-4">
-                Receba novidades sobre comércio exterior.
+                {t("footer.newsletterText")}
               </p>
               <div className="flex gap-2">
                 <Input
-                  placeholder="Seu email"
+                  placeholder={t("footer.emailPlaceholder")}
                   className="bg-white/10 border-white/20 text-white placeholder:text-slate-500 rounded-sm"
                 />
                 <Button className="bg-[#1E3A8A] hover:bg-[#172554] rounded-sm px-6">
-                  Assinar
+                  {t("footer.subscribe")}
                 </Button>
               </div>
             </div>
@@ -763,7 +903,7 @@ export default function Landing() {
 
           <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-slate-400 text-sm">
-              © 2026 Star Trade. Todos os direitos reservados.
+              {t("footer.copyright")}
             </p>
             <div className="flex gap-4">
               {settings.contact.linkedin && (
