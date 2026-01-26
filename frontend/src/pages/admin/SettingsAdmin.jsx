@@ -204,45 +204,143 @@ export default function SettingsAdmin() {
         <TabsContent value="hero">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Content Settings */}
-            <Card className="border-0 shadow-sm">
+            <Card className="border-0 shadow-sm lg:col-span-2">
               <CardHeader>
                 <CardTitle className="text-lg flex items-center gap-2">
-                  <Type className="w-5 h-5" />
-                  Conteúdo do Hero
+                  <Globe className="w-5 h-5" />
+                  Conteúdo do Hero (Multilíngue)
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
+                {/* Title in all languages */}
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
                     Título Principal
                   </label>
-                  <Input
-                    value={settings.hero.title}
-                    onChange={(e) => updateField("hero.title", e.target.value)}
-                    className="rounded-sm"
-                    data-testid="hero-title-input"
-                  />
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                      <span className="text-xs text-slate-500 flex items-center gap-1 mb-1">🇧🇷 Português</span>
+                      <Input
+                        value={typeof settings.hero.title === 'object' ? settings.hero.title.pt : settings.hero.title}
+                        onChange={(e) => updateField("hero.title", {
+                          ...((typeof settings.hero.title === 'object') ? settings.hero.title : {pt: settings.hero.title, en: settings.hero.title, es: settings.hero.title}),
+                          pt: e.target.value
+                        })}
+                        className="rounded-sm"
+                        data-testid="hero-title-pt"
+                      />
+                    </div>
+                    <div>
+                      <span className="text-xs text-slate-500 flex items-center gap-1 mb-1">🇺🇸 English</span>
+                      <Input
+                        value={typeof settings.hero.title === 'object' ? settings.hero.title.en : ''}
+                        onChange={(e) => updateField("hero.title", {
+                          ...((typeof settings.hero.title === 'object') ? settings.hero.title : {pt: settings.hero.title, en: '', es: ''}),
+                          en: e.target.value
+                        })}
+                        className="rounded-sm"
+                        data-testid="hero-title-en"
+                      />
+                    </div>
+                    <div>
+                      <span className="text-xs text-slate-500 flex items-center gap-1 mb-1">🇪🇸 Español</span>
+                      <Input
+                        value={typeof settings.hero.title === 'object' ? settings.hero.title.es : ''}
+                        onChange={(e) => updateField("hero.title", {
+                          ...((typeof settings.hero.title === 'object') ? settings.hero.title : {pt: settings.hero.title, en: '', es: ''}),
+                          es: e.target.value
+                        })}
+                        className="rounded-sm"
+                        data-testid="hero-title-es"
+                      />
+                    </div>
+                  </div>
                 </div>
+
+                {/* Subtitle in all languages */}
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
                     Subtítulo
                   </label>
-                  <Input
-                    value={settings.hero.subtitle}
-                    onChange={(e) => updateField("hero.subtitle", e.target.value)}
-                    className="rounded-sm"
-                  />
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                      <span className="text-xs text-slate-500 flex items-center gap-1 mb-1">🇧🇷 Português</span>
+                      <Input
+                        value={typeof settings.hero.subtitle === 'object' ? settings.hero.subtitle.pt : settings.hero.subtitle}
+                        onChange={(e) => updateField("hero.subtitle", {
+                          ...((typeof settings.hero.subtitle === 'object') ? settings.hero.subtitle : {pt: settings.hero.subtitle, en: settings.hero.subtitle, es: settings.hero.subtitle}),
+                          pt: e.target.value
+                        })}
+                        className="rounded-sm"
+                      />
+                    </div>
+                    <div>
+                      <span className="text-xs text-slate-500 flex items-center gap-1 mb-1">🇺🇸 English</span>
+                      <Input
+                        value={typeof settings.hero.subtitle === 'object' ? settings.hero.subtitle.en : ''}
+                        onChange={(e) => updateField("hero.subtitle", {
+                          ...((typeof settings.hero.subtitle === 'object') ? settings.hero.subtitle : {pt: settings.hero.subtitle, en: '', es: ''}),
+                          en: e.target.value
+                        })}
+                        className="rounded-sm"
+                      />
+                    </div>
+                    <div>
+                      <span className="text-xs text-slate-500 flex items-center gap-1 mb-1">🇪🇸 Español</span>
+                      <Input
+                        value={typeof settings.hero.subtitle === 'object' ? settings.hero.subtitle.es : ''}
+                        onChange={(e) => updateField("hero.subtitle", {
+                          ...((typeof settings.hero.subtitle === 'object') ? settings.hero.subtitle : {pt: settings.hero.subtitle, en: '', es: ''}),
+                          es: e.target.value
+                        })}
+                        className="rounded-sm"
+                      />
+                    </div>
+                  </div>
                 </div>
+
+                {/* CTA Text in all languages */}
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
                     Texto do Botão CTA
                   </label>
-                  <Input
-                    value={settings.hero.cta_text}
-                    onChange={(e) => updateField("hero.cta_text", e.target.value)}
-                    className="rounded-sm"
-                  />
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                      <span className="text-xs text-slate-500 flex items-center gap-1 mb-1">🇧🇷 Português</span>
+                      <Input
+                        value={typeof settings.hero.cta_text === 'object' ? settings.hero.cta_text.pt : settings.hero.cta_text}
+                        onChange={(e) => updateField("hero.cta_text", {
+                          ...((typeof settings.hero.cta_text === 'object') ? settings.hero.cta_text : {pt: settings.hero.cta_text, en: settings.hero.cta_text, es: settings.hero.cta_text}),
+                          pt: e.target.value
+                        })}
+                        className="rounded-sm"
+                      />
+                    </div>
+                    <div>
+                      <span className="text-xs text-slate-500 flex items-center gap-1 mb-1">🇺🇸 English</span>
+                      <Input
+                        value={typeof settings.hero.cta_text === 'object' ? settings.hero.cta_text.en : ''}
+                        onChange={(e) => updateField("hero.cta_text", {
+                          ...((typeof settings.hero.cta_text === 'object') ? settings.hero.cta_text : {pt: settings.hero.cta_text, en: '', es: ''}),
+                          en: e.target.value
+                        })}
+                        className="rounded-sm"
+                      />
+                    </div>
+                    <div>
+                      <span className="text-xs text-slate-500 flex items-center gap-1 mb-1">🇪🇸 Español</span>
+                      <Input
+                        value={typeof settings.hero.cta_text === 'object' ? settings.hero.cta_text.es : ''}
+                        onChange={(e) => updateField("hero.cta_text", {
+                          ...((typeof settings.hero.cta_text === 'object') ? settings.hero.cta_text : {pt: settings.hero.cta_text, en: '', es: ''}),
+                          es: e.target.value
+                        })}
+                        className="rounded-sm"
+                      />
+                    </div>
+                  </div>
                 </div>
+
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
                     URL do Vídeo (MP4)
