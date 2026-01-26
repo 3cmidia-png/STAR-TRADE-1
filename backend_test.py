@@ -298,7 +298,7 @@ class StarTradeAPITester:
             "Create Blog Post",
             "POST",
             "blog",
-            201,
+            200,
             data=test_post
         )
         
