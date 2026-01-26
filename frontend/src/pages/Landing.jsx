@@ -368,7 +368,7 @@ export default function Landing() {
       {/* Hero Section */}
       <section
         id="home"
-        className={`relative min-h-screen flex flex-col justify-center video-container ${heroStyles.container}`}
+        className="relative min-h-screen flex flex-col justify-center overflow-hidden"
         data-testid="hero-section"
       >
         <video
@@ -376,34 +376,37 @@ export default function Landing() {
           loop
           muted
           playsInline
-          className="absolute inset-0 w-full h-full object-cover"
-          style={{ transform: `scale(${(settings.hero?.video_zoom || 100) / 100})` }}
+          className="absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto -translate-x-1/2 -translate-y-1/2 object-cover"
           poster="https://images.pexels.com/videos/6857819/pexels-photo-6857819.jpeg?auto=compress&cs=tinysrgb&w=1920"
         >
           <source src={settings.hero.video_url} type="video/mp4" />
         </video>
         <div 
-          className="absolute inset-0"
-          style={heroStyles.overlayStyle}
+          className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/70"
         ></div>
         
-        <div className={`relative z-10 px-6 max-w-5xl mx-auto flex flex-col ${heroStyles.container}`}>
+        <div className={`relative z-10 px-6 max-w-5xl mx-auto w-full flex flex-col ${
+          settings.hero?.horizontal_align === "left" ? "items-start text-left" :
+          settings.hero?.horizontal_align === "right" ? "items-end text-right" :
+          "items-center text-center"
+        }`}
+        style={{ marginTop: `${settings.hero?.vertical_offset || 0}px` }}
+        >
           <h1
-            className="font-['Oswald'] text-white tracking-tight mb-6"
-            style={heroStyles.titleStyle}
+            className="font-['Oswald'] text-4xl md:text-6xl lg:text-7xl font-bold text-white uppercase tracking-tight mb-6 animate-fadeInUp"
+            style={{ maxWidth: `${settings.hero?.title_max_width || 800}px` }}
             data-testid="hero-title"
           >
             {settings.hero.title}
           </h1>
           <p 
-            className="text-white/90 mb-10"
-            style={heroStyles.subtitleStyle}
+            className="text-lg md:text-xl text-white/90 mb-10 max-w-2xl animate-fadeInUp delay-200"
           >
             {settings.hero.subtitle}
           </p>
           <Button
             onClick={() => scrollToSection("contato")}
-            className={`bg-[#1E3A8A] hover:bg-[#172554] text-white uppercase tracking-wider rounded-sm ${heroStyles.ctaSize}`}
+            className="bg-[#1E3A8A] hover:bg-[#172554] text-white px-10 py-6 text-base uppercase tracking-wider rounded-sm animate-fadeInUp delay-300"
             data-testid="hero-cta"
           >
             {settings.hero.cta_text}
