@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Star Trade - Comércio Internacional</title>
+    <meta name="description" content="Star Trade - Trading company especializada em importação e exportação. Conectamos sua empresa ao mercado global.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="navbar" class="navbar">
+        <div class="nav-container">
+            <a href="#home" class="logo">
+                <img id="logo-img" src="" alt="Star Trade">
+            </a>
+            
+            <div class="nav-menu" id="nav-menu">
+                <a href="#home" class="nav-link" data-i18n="nav.home">Home</a>
+                <a href="#about" class="nav-link" data-i18n="nav.about">Quem Somos</a>
+                <a href="#areas" class="nav-link" data-i18n="nav.areas">Áreas de Atuação</a>
+                <a href="#contact" class="nav-link" data-i18n="nav.contact">Contato</a>
+                
+                <!-- Language Selector -->
+                <div class="lang-selector">
+                    <button class="lang-btn" id="lang-btn">
+                        <span class="lang-flag">🇧🇷</span>
+                        <span class="lang-code">PT</span>
+                        <i data-lucide="chevron-down"></i>
+                    </button>
+                    <div class="lang-dropdown" id="lang-dropdown">
+                        <button onclick="changeLanguage('pt')">🇧🇷 Português</button>
+                        <button onclick="changeLanguage('en')">🇺🇸 English</button>
+                        <button onclick="changeLanguage('es')">🇪🇸 Español</button>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="mobile-menu-btn" id="mobile-menu-btn">
+                <i data-lucide="menu"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <video autoplay loop muted playsinline class="hero-video" id="hero-video">
+            <source src="" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 id="hero-title" class="hero-title"></h1>
+            <p id="hero-subtitle" class="hero-subtitle"></p>
+            <a href="#contact" class="btn btn-primary" id="hero-cta"></a>
+        </div>
+        <div class="scroll-indicator">
+            <div class="mouse">
+                <div class="wheel"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Differentials Section -->
+    <section class="differentials">
+        <div class="container">
+            <div class="differentials-grid" id="differentials-grid">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-content">
+                    <span class="section-subtitle" data-i18n="about.subtitle">Conheça nossa empresa</span>
+                    <h2 id="about-title" class="section-title"></h2>
+                    <p id="about-p1" class="about-text"></p>
+                    <p id="about-p2" class="about-text"></p>
+                    <a href="#contact" class="btn btn-outline" data-i18n="about.cta">Entre em Contato</a>
+                </div>
+                <div class="about-image">
+                    <img id="about-img" src="" alt="Star Trade">
+                    <div class="about-decoration-1"></div>
+                    <div class="about-decoration-2"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Areas Section -->
+    <section id="areas" class="areas">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle" data-i18n="areas.subtitle">Especialistas em segmentos estratégicos</span>
+                <h2 class="section-title" data-i18n="areas.title">Áreas de Atuação</h2>
+            </div>
+            <div class="areas-grid" id="areas-grid">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="stats-bg"></div>
+        <div class="stats-overlay"></div>
+        <div class="container">
+            <div class="stats-grid" id="stats-grid">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle" data-i18n="contact.subtitle">Fale conosco</span>
+                <h2 class="section-title" data-i18n="contact.title">Entre em Contato</h2>
+            </div>
+            <div class="contact-grid">
+                <form id="contact-form" class="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label data-i18n="contact.form.name">Nome *</label>
+                            <input type="text" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label data-i18n="contact.form.email">Email *</label>
+                            <input type="email" name="email" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label data-i18n="contact.form.phone">Telefone</label>
+                            <input type="tel" name="phone">
+                        </div>
+                        <div class="form-group">
+                            <label data-i18n="contact.form.company">Empresa</label>
+                            <input type="text" name="company">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label data-i18n="contact.form.message">Mensagem *</label>
+                        <textarea name="message" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <span data-i18n="contact.form.submit">Enviar Mensagem</span>
+                        <i data-lucide="arrow-right"></i>
+                    </button>
+                </form>
+                
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i data-lucide="map-pin"></i>
+                        </div>
+                        <div>
+                            <h4 data-i18n="contact.info.address">Endereço</h4>
+                            <p id="contact-address"></p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i data-lucide="phone"></i>
+                        </div>
+                        <div>
+                            <h4 data-i18n="contact.info.phone">Telefone</h4>
+                            <p id="contact-phone"></p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i data-lucide="mail"></i>
+                        </div>
+                        <div>
+                            <h4 data-i18n="contact.info.email">Email</h4>
+                            <p id="contact-email"></p>
+                        </div>
+                    </div>
+                    
+                    <div class="social-links">
+                        <h4 data-i18n="contact.social">Siga-nos nas Redes Sociais</h4>
+                        <div class="social-icons">
+                            <a href="" id="social-linkedin" target="_blank"><i data-lucide="linkedin"></i></a>
+                            <a href="" id="social-instagram" target="_blank"><i data-lucide="instagram"></i></a>
+                            <a href="" id="social-facebook" target="_blank"><i data-lucide="facebook"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <img id="footer-logo" src="" alt="Star Trade" class="footer-logo">
+                    <p data-i18n="footer.description">Trading company especializada em soluções completas de importação e exportação, conectando empresas ao mercado global.</p>
+                </div>
+                <div class="footer-links">
+                    <h4 data-i18n="footer.quickLinks">Links Rápidos</h4>
+                    <ul>
+                        <li><a href="#home" data-i18n="nav.home">Home</a></li>
+                        <li><a href="#about" data-i18n="nav.about">Quem Somos</a></li>
+                        <li><a href="#areas" data-i18n="nav.areas">Áreas de Atuação</a></li>
+                        <li><a href="#contact" data-i18n="nav.contact">Contato</a></li>
+                    </ul>
+                </div>
+                <div class="footer-newsletter">
+                    <h4 data-i18n="footer.newsletter">Newsletter</h4>
+                    <p data-i18n="footer.newsletterText">Receba novidades sobre comércio exterior.</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Seu email">
+                        <button type="submit" data-i18n="footer.subscribe">Assinar</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p data-i18n="footer.copyright">© 2026 Star Trade. Todos os direitos reservados.</p>
+                <div class="footer-social">
+                    <a href="" id="footer-linkedin" target="_blank"><i data-lucide="linkedin"></i></a>
+                    <a href="" id="footer-instagram" target="_blank"><i data-lucide="instagram"></i></a>
+                    <a href="" id="footer-facebook" target="_blank"><i data-lucide="facebook"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Button -->
+    <a href="" id="whatsapp-btn" class="whatsapp-btn" target="_blank">
+        <i data-lucide="message-circle"></i>
+    </a>
+
+    <script src="translations.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
