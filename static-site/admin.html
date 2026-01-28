@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Star Trade</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f1f5f9; min-height: 100vh; }
+        
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .login-box {
+            background: white;
+            padding: 48px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+        .login-box h1 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 24px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            color: #0f172a;
+        }
+        .login-box p { color: #64748b; margin-bottom: 32px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #334155;
+            margin-bottom: 8px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            font-size: 15px;
+            font-family: inherit;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: #1e3a8a;
+            box-shadow: 0 0 0 3px rgba(30,58,138,0.1);
+        }
+        .btn {
+            width: 100%;
+            padding: 14px 24px;
+            background: #1e3a8a;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .btn:hover { background: #172554; }
+        .error { color: #dc2626; font-size: 14px; margin-top: 16px; display: none; }
+        
+        /* Admin Panel */
+        .admin-container { display: none; }
+        .admin-header {
+            background: #0f172a;
+            color: white;
+            padding: 16px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .admin-header h1 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .admin-header a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .admin-header a:hover { color: white; }
+        
+        .admin-nav {
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 0 32px;
+            display: flex;
+            gap: 4px;
+        }
+        .admin-nav button {
+            padding: 16px 24px;
+            background: none;
+            border: none;
+            font-size: 14px;
+            font-weight: 500;
+            color: #64748b;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+        .admin-nav button:hover { color: #1e3a8a; }
+        .admin-nav button.active {
+            color: #1e3a8a;
+            border-bottom-color: #1e3a8a;
+        }
+        
+        .admin-content {
+            padding: 32px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section { display: none; }
+        .section.active { display: block; }
+        
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        .card h2 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .card h2 svg { width: 20px; height: 20px; color: #1e3a8a; }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        .form-row.single { grid-template-columns: 1fr; }
+        .form-row label {
+            font-size: 12px;
+            font-weight: 500;
+            color: #64748b;
+            display: block;
+            margin-bottom: 6px;
+        }
+        .form-row input, .form-row textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+        .form-row textarea { min-height: 80px; resize: vertical; }
+        .form-row input:focus, .form-row textarea:focus {
+            outline: none;
+            border-color: #1e3a8a;
+        }
+        .lang-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .area-item, .diff-item {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+        .area-item h3, .diff-item h3 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #334155;
+        }
+        
+        .img-preview {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-top: 8px;
+            background: #f1f5f9;
+        }
+        
+        .save-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #e2e8f0;
+            padding: 16px 32px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.05);
+        }
+        .save-bar button {
+            padding: 12px 32px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-save {
+            background: #1e3a8a;
+            color: white;
+            border: none;
+        }
+        .btn-save:hover { background: #172554; }
+        .btn-preview {
+            background: white;
+            color: #1e3a8a;
+            border: 1px solid #1e3a8a;
+        }
+        .btn-preview:hover { background: #f1f5f9; }
+        
+        .toast {
+            position: fixed;
+            bottom: 80px;
+            right: 32px;
+            background: #10b981;
+            color: white;
+            padding: 16px 24px;
+            border-radius: 8px;
+            font-weight: 500;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+        .toast.error { background: #ef4444; }
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @media (max-width: 768px) {
+            .form-row { grid-template-columns: 1fr; }
+            .admin-nav { overflow-x: auto; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login -->
+    <div class="login-container" id="login-container">
+        <div class="login-box">
+            <h1>Painel Admin</h1>
+            <p>Entre com suas credenciais</p>
+            <form id="login-form">
+                <div class="form-group">
+                    <label>Usuário</label>
+                    <input type="text" id="username" required>
+                </div>
+                <div class="form-group">
+                    <label>Senha</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit" class="btn">Entrar</button>
+                <p class="error" id="login-error">Usuário ou senha incorretos</p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div class="admin-container" id="admin-container">
+        <header class="admin-header">
+            <h1>Star Trade - Admin</h1>
+            <div style="display: flex; gap: 24px;">
+                <a href="index.html" target="_blank"><i data-lucide="external-link"></i> Ver Site</a>
+                <a href="#" onclick="logout()"><i data-lucide="log-out"></i> Sair</a>
+            </div>
+        </header>
+        
+        <nav class="admin-nav">
+            <button class="active" onclick="showSection('hero')">Hero</button>
+            <button onclick="showSection('about')">Quem Somos</button>
+            <button onclick="showSection('areas')">Áreas</button>
+            <button onclick="showSection('contact')">Contato</button>
+        </nav>
+        
+        <main class="admin-content">
+            <!-- Hero Section -->
+            <div class="section active" id="section-hero">
+                <div class="card">
+                    <h2><i data-lucide="video"></i> Seção Hero</h2>
+                    
+                    <div class="form-row single">
+                        <div>
+                            <label>URL do Vídeo (MP4)</label>
+                            <input type="url" id="hero-video" placeholder="https://...">
+                        </div>
+                    </div>
+                    
+                    <h3 style="margin: 24px 0 12px; font-size: 14px; color: #64748b;">Título Principal</h3>
+                    <div class="form-row">
+                        <div>
+                            <label class="lang-label">🇧🇷 Português</label>
+                            <input type="text" id="hero-title-pt">
+                        </div>
+                        <div>
+                            <label class="lang-label">🇺🇸 English</label>
+                            <input type="text" id="hero-title-en">
+                        </div>
+                        <div>
+                            <label class="lang-label">🇪🇸 Español</label>
+                            <input type="text" id="hero-title-es">
+                        </div>
+                    </div>
+                    
+                    <h3 style="margin: 24px 0 12px; font-size: 14px; color: #64748b;">Subtítulo</h3>
+                    <div class="form-row">
+                        <div>
+                            <label class="lang-label">🇧🇷 Português</label>
+                            <input type="text" id="hero-subtitle-pt">
+                        </div>
+                        <div>
+                            <label class="lang-label">🇺🇸 English</label>
+                            <input type="text" id="hero-subtitle-en">
+                        </div>
+                        <div>
+                            <label class="lang-label">🇪🇸 Español</label>
+                            <input type="text" id="hero-subtitle-es">
+                        </div>
+                    </div>
+                    
+                    <h3 style="margin: 24px 0 12px; font-size: 14px; color: #64748b;">Texto do Botão</h3>
+                    <div class="form-row">
+                        <div>
+                            <label class="lang-label">🇧🇷 Português</label>
+                            <input type="text" id="hero-cta-pt">
+                        </div>
+                        <div>
+                            <label class="lang-label">🇺🇸 English</label>
+                            <input type="text" id="hero-cta-en">
+                        </div>
+                        <div>
+                            <label class="lang-label">🇪🇸 Español</label>
+                            <input type="text" id="hero-cta-es">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- About Section -->
+            <div class="section" id="section-about">
+                <div class="card">
+                    <h2><i data-lucide="users"></i> Quem Somos</h2>
+                    
+                    <div class="form-row single">
+                        <div>
+                            <label>URL da Imagem</label>
+                            <input type="url" id="about-image" placeholder="https://...">
+                            <img id="about-img-preview" class="img-preview" src="" alt="">
+                        </div>
+                    </div>
+                    
+                    <h3 style="margin: 24px 0 12px; font-size: 14px; color: #64748b;">Título</h3>
+                    <div class="form-row">
+                        <div>
+                            <label class="lang-label">🇧🇷 Português</label>
+                            <input type="text" id="about-title-pt">
+                        </div>
+                        <div>
+                            <label class="lang-label">🇺🇸 English</label>
+                            <input type="text" id="about-title-en">
+                        </div>
+                        <div>
+                            <label class="lang-label">🇪🇸 Español</label>
+                            <input type="text" id="about-title-es">
+                        </div>
+                    </div>
+                    
+                    <h3 style="margin: 24px 0 12px; font-size: 14px; color: #64748b;">Parágrafo 1</h3>
+                    <div class="form-row">
+                        <div>
+                            <label class="lang-label">🇧🇷 Português</label>
+                            <textarea id="about-p1-pt"></textarea>
+                        </div>
+                        <div>
+                            <label class="lang-label">🇺🇸 English</label>
+                            <textarea id="about-p1-en"></textarea>
+                        </div>
+                        <div>
+                            <label class="lang-label">🇪🇸 Español</label>
+                            <textarea id="about-p1-es"></textarea>
+                        </div>
+                    </div>
+                    
+                    <h3 style="margin: 24px 0 12px; font-size: 14px; color: #64748b;">Parágrafo 2</h3>
+                    <div class="form-row">
+                        <div>
+                            <label class="lang-label">🇧🇷 Português</label>
+                            <textarea id="about-p2-pt"></textarea>
+                        </div>
+                        <div>
+                            <label class="lang-label">🇺🇸 English</label>
+                            <textarea id="about-p2-en"></textarea>
+                        </div>
+                        <div>
+                            <label class="lang-label">🇪🇸 Español</label>
+                            <textarea id="about-p2-es"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Areas Section -->
+            <div class="section" id="section-areas">
+                <div class="card">
+                    <h2><i data-lucide="grid"></i> Áreas de Atuação</h2>
+                    <div id="areas-list"></div>
+                </div>
+            </div>
+            
+            <!-- Contact Section -->
+            <div class="section" id="section-contact">
+                <div class="card">
+                    <h2><i data-lucide="phone"></i> Informações de Contato</h2>
+                    
+                    <div class="form-row">
+                        <div>
+                            <label>Endereço</label>
+                            <input type="text" id="contact-address">
+                        </div>
+                        <div>
+                            <label>Telefone</label>
+                            <input type="text" id="contact-phone">
+                        </div>
+                        <div>
+                            <label>Email</label>
+                            <input type="email" id="contact-email">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div>
+                            <label>WhatsApp (com código país)</label>
+                            <input type="text" id="contact-whatsapp" placeholder="+5511999999999">
+                        </div>
+                        <div>
+                            <label>LinkedIn</label>
+                            <input type="url" id="contact-linkedin">
+                        </div>
+                        <div>
+                            <label>Instagram</label>
+                            <input type="url" id="contact-instagram">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div>
+                            <label>Facebook</label>
+                            <input type="url" id="contact-facebook">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <div class="save-bar">
+            <button class="btn-preview" onclick="window.open('index.html', '_blank')">
+                <i data-lucide="eye"></i> Visualizar Site
+            </button>
+            <button class="btn-save" onclick="saveConfig()">
+                <i data-lucide="save"></i> Salvar Alterações
+            </button>
+        </div>
+        
+        <div class="toast" id="toast">Alterações salvas com sucesso!</div>
+    </div>
+
+    <script>
+        let config = {};
+        
+        // Login
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            try {
+                const response = await fetch('config.json');
+                config = await response.json();
+                
+                if (username === config.admin?.username && password === config.admin?.password) {
+                    document.getElementById('login-container').style.display = 'none';
+                    document.getElementById('admin-container').style.display = 'block';
+                    loadFormData();
+                    lucide.createIcons();
+                } else {
+                    document.getElementById('login-error').style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+        
+        // Load form data
+        function loadFormData() {
+            // Hero
+            document.getElementById('hero-video').value = config.hero?.video_url || '';
+            document.getElementById('hero-title-pt').value = config.hero?.title?.pt || '';
+            document.getElementById('hero-title-en').value = config.hero?.title?.en || '';
+            document.getElementById('hero-title-es').value = config.hero?.title?.es || '';
+            document.getElementById('hero-subtitle-pt').value = config.hero?.subtitle?.pt || '';
+            document.getElementById('hero-subtitle-en').value = config.hero?.subtitle?.en || '';
+            document.getElementById('hero-subtitle-es').value = config.hero?.subtitle?.es || '';
+            document.getElementById('hero-cta-pt').value = config.hero?.cta_text?.pt || '';
+            document.getElementById('hero-cta-en').value = config.hero?.cta_text?.en || '';
+            document.getElementById('hero-cta-es').value = config.hero?.cta_text?.es || '';
+            
+            // About
+            document.getElementById('about-image').value = config.about?.image || '';
+            document.getElementById('about-img-preview').src = config.about?.image || '';
+            document.getElementById('about-title-pt').value = config.about?.title?.pt || '';
+            document.getElementById('about-title-en').value = config.about?.title?.en || '';
+            document.getElementById('about-title-es').value = config.about?.title?.es || '';
+            document.getElementById('about-p1-pt').value = config.about?.paragraph1?.pt || '';
+            document.getElementById('about-p1-en').value = config.about?.paragraph1?.en || '';
+            document.getElementById('about-p1-es').value = config.about?.paragraph1?.es || '';
+            document.getElementById('about-p2-pt').value = config.about?.paragraph2?.pt || '';
+            document.getElementById('about-p2-en').value = config.about?.paragraph2?.en || '';
+            document.getElementById('about-p2-es').value = config.about?.paragraph2?.es || '';
+            
+            // Contact
+            document.getElementById('contact-address').value = config.contact?.address || '';
+            document.getElementById('contact-phone').value = config.contact?.phone || '';
+            document.getElementById('contact-email').value = config.contact?.email || '';
+            document.getElementById('contact-whatsapp').value = config.contact?.whatsapp || '';
+            document.getElementById('contact-linkedin').value = config.contact?.linkedin || '';
+            document.getElementById('contact-instagram').value = config.contact?.instagram || '';
+            document.getElementById('contact-facebook').value = config.contact?.facebook || '';
+            
+            // Areas
+            renderAreas();
+            
+            // Image preview update
+            document.getElementById('about-image').addEventListener('input', (e) => {
+                document.getElementById('about-img-preview').src = e.target.value;
+            });
+        }
+        
+        // Render areas
+        function renderAreas() {
+            const container = document.getElementById('areas-list');
+            container.innerHTML = '';
+            
+            (config.areas || []).forEach((area, index) => {
+                container.innerHTML += `
+                    <div class="area-item">
+                        <h3>Área ${index + 1}: ${area.title?.pt || ''}</h3>
+                        <div class="form-row">
+                            <div>
+                                <label>URL da Imagem</label>
+                                <input type="url" id="area-${index}-image" value="${area.image || ''}" onchange="updateAreaImage(${index}, this.value)">
+                                <img class="img-preview" src="${area.image || ''}" alt="">
+                            </div>
+                            <div>
+                                <label>Ícone (wheat, gem, cart, bike)</label>
+                                <input type="text" id="area-${index}-icon" value="${area.icon || ''}">
+                            </div>
+                            <div>
+                                <label>É especialidade?</label>
+                                <select id="area-${index}-specialty" style="padding: 10px; width: 100%; border: 1px solid #e2e8f0; border-radius: 4px;">
+                                    <option value="false" ${!area.is_specialty ? 'selected' : ''}>Não</option>
+                                    <option value="true" ${area.is_specialty ? 'selected' : ''}>Sim</option>
+                                </select>
+                            </div>
+                        </div>
+                        <h4 style="margin: 16px 0 8px; font-size: 13px; color: #64748b;">Título</h4>
+                        <div class="form-row">
+                            <div>
+                                <label class="lang-label">🇧🇷 PT</label>
+                                <input type="text" id="area-${index}-title-pt" value="${area.title?.pt || ''}">
+                            </div>
+                            <div>
+                                <label class="lang-label">🇺🇸 EN</label>
+                                <input type="text" id="area-${index}-title-en" value="${area.title?.en || ''}">
+                            </div>
+                            <div>
+                                <label class="lang-label">🇪🇸 ES</label>
+                                <input type="text" id="area-${index}-title-es" value="${area.title?.es || ''}">
+                            </div>
+                        </div>
+                        <h4 style="margin: 16px 0 8px; font-size: 13px; color: #64748b;">Descrição</h4>
+                        <div class="form-row">
+                            <div>
+                                <label class="lang-label">🇧🇷 PT</label>
+                                <textarea id="area-${index}-desc-pt">${area.description?.pt || ''}</textarea>
+                            </div>
+                            <div>
+                                <label class="lang-label">🇺🇸 EN</label>
+                                <textarea id="area-${index}-desc-en">${area.description?.en || ''}</textarea>
+                            </div>
+                            <div>
+                                <label class="lang-label">🇪🇸 ES</label>
+                                <textarea id="area-${index}-desc-es">${area.description?.es || ''}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+        
+        function updateAreaImage(index, value) {
+            const img = document.querySelector(`#area-${index}-image`).parentElement.querySelector('img');
+            img.src = value;
+        }
+        
+        // Show section
+        function showSection(name) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(`section-${name}`).classList.add('active');
+            document.querySelectorAll('.admin-nav button').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+        
+        // Save config
+        function saveConfig() {
+            // Update config object from form
+            config.hero.video_url = document.getElementById('hero-video').value;
+            config.hero.title = {
+                pt: document.getElementById('hero-title-pt').value,
+                en: document.getElementById('hero-title-en').value,
+                es: document.getElementById('hero-title-es').value
+            };
+            config.hero.subtitle = {
+                pt: document.getElementById('hero-subtitle-pt').value,
+                en: document.getElementById('hero-subtitle-en').value,
+                es: document.getElementById('hero-subtitle-es').value
+            };
+            config.hero.cta_text = {
+                pt: document.getElementById('hero-cta-pt').value,
+                en: document.getElementById('hero-cta-en').value,
+                es: document.getElementById('hero-cta-es').value
+            };
+            
+            config.about.image = document.getElementById('about-image').value;
+            config.about.title = {
+                pt: document.getElementById('about-title-pt').value,
+                en: document.getElementById('about-title-en').value,
+                es: document.getElementById('about-title-es').value
+            };
+            config.about.paragraph1 = {
+                pt: document.getElementById('about-p1-pt').value,
+                en: document.getElementById('about-p1-en').value,
+                es: document.getElementById('about-p1-es').value
+            };
+            config.about.paragraph2 = {
+                pt: document.getElementById('about-p2-pt').value,
+                en: document.getElementById('about-p2-en').value,
+                es: document.getElementById('about-p2-es').value
+            };
+            
+            // Areas
+            config.areas.forEach((area, index) => {
+                area.image = document.getElementById(`area-${index}-image`).value;
+                area.icon = document.getElementById(`area-${index}-icon`).value;
+                area.is_specialty = document.getElementById(`area-${index}-specialty`).value === 'true';
+                area.title = {
+                    pt: document.getElementById(`area-${index}-title-pt`).value,
+                    en: document.getElementById(`area-${index}-title-en`).value,
+                    es: document.getElementById(`area-${index}-title-es`).value
+                };
+                area.description = {
+                    pt: document.getElementById(`area-${index}-desc-pt`).value,
+                    en: document.getElementById(`area-${index}-desc-en`).value,
+                    es: document.getElementById(`area-${index}-desc-es`).value
+                };
+            });
+            
+            config.contact.address = document.getElementById('contact-address').value;
+            config.contact.phone = document.getElementById('contact-phone').value;
+            config.contact.email = document.getElementById('contact-email').value;
+            config.contact.whatsapp = document.getElementById('contact-whatsapp').value;
+            config.contact.linkedin = document.getElementById('contact-linkedin').value;
+            config.contact.instagram = document.getElementById('contact-instagram').value;
+            config.contact.facebook = document.getElementById('contact-facebook').value;
+            
+            // Download config.json
+            const dataStr = JSON.stringify(config, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'config.json';
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            // Show toast
+            const toast = document.getElementById('toast');
+            toast.textContent = 'Config.json baixado! Faça upload para o servidor.';
+            toast.style.display = 'block';
+            setTimeout(() => { toast.style.display = 'none'; }, 4000);
+        }
+        
+        // Logout
+        function logout() {
+            document.getElementById('login-container').style.display = 'flex';
+            document.getElementById('admin-container').style.display = 'none';
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+        }
+        
+        // Init Lucide icons
+        lucide.createIcons();
+    </script>
+</body>
+</html>
