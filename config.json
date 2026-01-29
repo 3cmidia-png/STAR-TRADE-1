@@ -1,0 +1,165 @@
+{
+  "site": {
+    "name": "Star Trade",
+    "logo": "https://customer-assets.emergentagent.com/job_star-trade-intl/artifacts/7zqbrzwt_star%20trade.png",
+    "language": "pt"
+  },
+  "hero": {
+    "video_url": "https://videos.pexels.com/video-files/6857819/6857819-hd_1920_1080_24fps.mp4",
+    "title": {
+      "pt": "Conectando o Mundo através do Comércio Internacional",
+      "en": "Connecting the World Through International Trade",
+      "es": "Conectando el Mundo a través del Comercio Internacional"
+    },
+    "subtitle": {
+      "pt": "Soluções completas em importação e exportação",
+      "en": "Complete import and export solutions",
+      "es": "Soluciones completas en importación y exportación"
+    },
+    "cta_text": {
+      "pt": "Fale com um Especialista",
+      "en": "Talk to a Specialist",
+      "es": "Hable con un Especialista"
+    }
+  },
+  "differentials": [
+    {
+      "icon": "users",
+      "title": {
+        "pt": "Equipe Especializada",
+        "en": "Specialized Team",
+        "es": "Equipo Especializado"
+      },
+      "description": {
+        "pt": "Profissionais com vasta experiência em comércio exterior",
+        "en": "Professionals with extensive experience in foreign trade",
+        "es": "Profesionales con amplia experiencia en comercio exterior"
+      }
+    },
+    {
+      "icon": "clock",
+      "title": {
+        "pt": "Agilidade",
+        "en": "Agility",
+        "es": "Agilidad"
+      },
+      "description": {
+        "pt": "Processos otimizados para entregas no prazo",
+        "en": "Optimized processes for on-time deliveries",
+        "es": "Procesos optimizados para entregas a tiempo"
+      }
+    },
+    {
+      "icon": "shield",
+      "title": {
+        "pt": "Segurança",
+        "en": "Security",
+        "es": "Seguridad"
+      },
+      "description": {
+        "pt": "Gestão completa com total transparência",
+        "en": "Complete management with total transparency",
+        "es": "Gestión completa con total transparencia"
+      }
+    }
+  ],
+  "about": {
+    "title": {
+      "pt": "Sobre a Star Trade",
+      "en": "About Star Trade",
+      "es": "Acerca de Star Trade"
+    },
+    "paragraph1": {
+      "pt": "A Star Trade é uma trading company especializada em soluções completas de importação e exportação. Nossa missão é conectar empresas ao mercado global com eficiência, segurança e inteligência comercial.",
+      "en": "Star Trade is a trading company specialized in complete import and export solutions. Our mission is to connect companies to the global market with efficiency, security and commercial intelligence.",
+      "es": "Star Trade es una empresa comercializadora especializada en soluciones completas de importación y exportación. Nuestra misión es conectar empresas al mercado global con eficiencia, seguridad e inteligencia comercial."
+    },
+    "paragraph2": {
+      "pt": "Com anos de experiência no mercado, oferecemos assessoria completa: desde a cotação até a entrega final, incluindo despacho aduaneiro, planejamento logístico e consultoria tributária.",
+      "en": "With years of market experience, we offer complete advisory: from quotation to final delivery, including customs clearance, logistics planning and tax consulting.",
+      "es": "Con años de experiencia en el mercado, ofrecemos asesoría completa: desde la cotización hasta la entrega final, incluyendo despacho aduanero, planificación logística y consultoría tributaria."
+    },
+    "image": "https://images.unsplash.com/photo-1703194531119-e8b98a555cb6?q=85&w=1000&auto=format&fit=crop"
+  },
+  "areas": [
+    {
+      "title": {
+        "pt": "Alimentos",
+        "en": "Food Products",
+        "es": "Alimentos"
+      },
+      "description": {
+        "pt": "Importação e exportação de produtos alimentícios, commodities agrícolas e insumos para a indústria alimentícia.",
+        "en": "Import and export of food products, agricultural commodities and inputs for the food industry.",
+        "es": "Importación y exportación de productos alimenticios, commodities agrícolas e insumos para la industria alimenticia."
+      },
+      "image": "https://images.unsplash.com/photo-1650012048722-c81295ccbe79?q=85&w=800&auto=format&fit=crop",
+      "icon": "wheat",
+      "is_specialty": false
+    },
+    {
+      "title": {
+        "pt": "Rochas Ornamentais",
+        "en": "Ornamental Stones",
+        "es": "Rocas Ornamentales"
+      },
+      "description": {
+        "pt": "Especialistas em importação e exportação de mármores, granitos, quartzos e pedras naturais.",
+        "en": "Specialists in import and export of marbles, granites, quartz and natural stones.",
+        "es": "Especialistas en importación y exportación de mármoles, granitos, cuarzos y piedras naturales."
+      },
+      "image": "https://images.unsplash.com/photo-1585749864763-de34e7afde1b?q=85&w=800&auto=format&fit=crop",
+      "icon": "gem",
+      "is_specialty": true
+    },
+    {
+      "title": {
+        "pt": "Comércio Digital",
+        "en": "Digital Commerce",
+        "es": "Comercio Digital"
+      },
+      "description": {
+        "pt": "Soluções para e-commerce internacional: produtos eletrônicos, acessórios, gadgets e itens de tecnologia.",
+        "en": "Solutions for international e-commerce: electronics, accessories, gadgets and technology items.",
+        "es": "Soluciones para e-commerce internacional: productos electrónicos, accesorios, gadgets y artículos de tecnología."
+      },
+      "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=85&w=800&auto=format&fit=crop",
+      "icon": "cart",
+      "is_specialty": false
+    },
+    {
+      "title": {
+        "pt": "Bicicletas Elétricas",
+        "en": "Electric Bicycles",
+        "es": "Bicicletas Eléctricas"
+      },
+      "description": {
+        "pt": "Importação de e-bikes e componentes de mobilidade elétrica sustentável.",
+        "en": "Import of e-bikes and sustainable electric mobility components.",
+        "es": "Importación de e-bikes y componentes de movilidad eléctrica sostenible."
+      },
+      "image": "https://images.unsplash.com/photo-1747866746076-689c5371e707?q=85&w=800&auto=format&fit=crop",
+      "icon": "bike",
+      "is_specialty": false
+    }
+  ],
+  "stats": [
+    { "value": "500+", "label": { "pt": "Importações Realizadas", "en": "Imports Completed", "es": "Importaciones Realizadas" } },
+    { "value": "1500+", "label": { "pt": "Projetos Concluídos", "en": "Projects Completed", "es": "Proyectos Completados" } },
+    { "value": "50+", "label": { "pt": "Containers/Mês", "en": "Containers/Month", "es": "Contenedores/Mes" } },
+    { "value": "8+", "label": { "pt": "Anos de Experiência", "en": "Years of Experience", "es": "Años de Experiencia" } }
+  ],
+  "contact": {
+    "address": "Av. Paulista, 1000 - Bela Vista, São Paulo - SP, 01310-100",
+    "phone": "+55 (11) 99999-9999",
+    "email": "contato@startrade.com.br",
+    "whatsapp": "+5511999999999",
+    "linkedin": "https://linkedin.com/company/startrade",
+    "instagram": "https://instagram.com/startrade",
+    "facebook": "https://facebook.com/startrade"
+  },
+  "admin": {
+    "username": "admin",
+    "password": "StarTrade2024!"
+  }
+}
